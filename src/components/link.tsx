@@ -9,6 +9,13 @@ import {FunctionComponent } from 'react'
 var url : string = "";
 
 const LinkSheet: FunctionComponent = () => {
+
+  // Typescript Code --> 
+
+
+
+  // Checking if what you put in is a URL
+
   const router = useRouter();
   const arrow : String = "->"
 
@@ -38,6 +45,9 @@ const LinkSheet: FunctionComponent = () => {
   }
  
 
+
+
+ // Returned React Code
 
  return (
   <ChakraProvider>
