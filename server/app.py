@@ -1,13 +1,17 @@
-from flask import Flask
+from flask import Flask, render_template, request
+from waitress import serve
+import random
+from redis import Redis
 
 app = Flask(__name__)
+# redis = Redis(host='redis', port=6379)
 
-@app.route("/")
-def hello():
-    print("hi")
-    return "Hello, World!"
+@app.route('/')
+def index():
+    return "test"
 
 
 
-if __name__ == '__main__':
-    app.run(port=4000)
+@app.route('/')
+if __name__ == "__main__":
+    serve(app, host="0.0.0.0", port=5000) 
