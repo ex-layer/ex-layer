@@ -1,9 +1,5 @@
 'use client'
-<<<<<<< HEAD
-import { ChakraProvider, useBoolean, Input, Button, Fade, InputGroup, InputRightElement, ScaleFade } from '@chakra-ui/react'
-=======
 import { ChakraProvider, useBoolean, Input, Button, Collapse, Fade, InputGroup, InputRightElement } from '@chakra-ui/react'
->>>>>>> 1a7e9d64490ccf2f9f70a49ad8602020e2d1042d
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { createContext } from 'react'
