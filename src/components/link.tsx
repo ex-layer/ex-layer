@@ -1,5 +1,5 @@
 'use client'
-import { ChakraProvider, useBoolean, Input, Button, Fade, InputGroup, InputRightElement } from '@chakra-ui/react'
+import { ChakraProvider, useBoolean, Input, Button, Fade, InputGroup, InputRightElement, ScaleFade } from '@chakra-ui/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { createContext } from 'react'
@@ -9,6 +9,13 @@ import {FunctionComponent } from 'react'
 var url : string = "";
 
 const LinkSheet: FunctionComponent = () => {
+
+  // Typescript Code --> 
+
+
+
+  // Checking if what you put in is a URL
+
   const router = useRouter();
   const arrow : String = "->"
 
@@ -38,10 +45,17 @@ const LinkSheet: FunctionComponent = () => {
  
 
 
+
+ // Returned React Code
+
  return (
   <ChakraProvider>
-      <Button colorScheme='messenger' onClick={bool.toggle}>Link existing data layer</Button>
-      <Fade in={pressed}>
+
+      <Button variant ="outline"colorScheme='messenger' onClick={bool.toggle}>Link existing data layer</Button>
+
+      <ScaleFade initialScale={0.9} in={pressed}>
+
+
       <InputGroup size ='md' className = "mt-4">
 
         
@@ -54,7 +68,9 @@ const LinkSheet: FunctionComponent = () => {
 
       </InputGroup>
 
-      </Fade>
+
+
+      </ScaleFade>
 
   </ChakraProvider>
     );

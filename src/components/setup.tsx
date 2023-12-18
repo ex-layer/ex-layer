@@ -6,7 +6,7 @@ const CreateSheet: FunctionComponent = () => {
 
  return (
   <ChakraProvider>
-      <Button colorScheme='messenger' >Create & link data layer</Button>
+      <Button colorScheme='messenger' variant ="outline">Create & link data layer</Button>
   </ChakraProvider>
     );
 
