@@ -1,11 +1,15 @@
 'use client'
+<<<<<<< HEAD
 import { ChakraProvider, useBoolean, Input, Button, Fade, InputGroup, InputRightElement, ScaleFade } from '@chakra-ui/react'
+=======
+import { ChakraProvider, useBoolean, Input, Button, Collapse, Fade, InputGroup, InputRightElement } from '@chakra-ui/react'
+>>>>>>> 1a7e9d64490ccf2f9f70a49ad8602020e2d1042d
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { createContext } from 'react'
 import {FunctionComponent } from 'react'
 
-
+// Typescript Code
 var url : string = "";
 
 const LinkSheet: FunctionComponent = () => {
@@ -20,6 +24,7 @@ const LinkSheet: FunctionComponent = () => {
   const arrow : String = "->"
 
   const isValidUrl = (urlString: string): boolean => {
+    // If URL is valid
     try { 
       return Boolean(new URL(urlString)); 
     } catch (e) { 
@@ -50,16 +55,14 @@ const LinkSheet: FunctionComponent = () => {
 
  return (
   <ChakraProvider>
-
-      <Button variant ="outline"colorScheme='messenger' onClick={bool.toggle}>Link existing data layer</Button>
-
-      <ScaleFade initialScale={0.9} in={pressed}>
+      <Button colorScheme='messenger' onClick={bool.toggle}>Link existing data layer</Button>
+      <Collapse in={pressed} animateOpacity>
 
 
       <InputGroup size ='md' className = "mt-4">
 
-        
-      <Input value = {value} pr ='4.5rem' onChange={handleChange} placeholder="spreadsheet URL "/>
+  
+      <Input value = {value} pr ='5.5rem' onChange={handleChange} placeholder="spreadsheet URL "/>
       <InputRightElement width='4.5rem'>
         <Button h='1.75rem' size='sm' onClick={handleClick}>
           {arrow}
@@ -67,10 +70,7 @@ const LinkSheet: FunctionComponent = () => {
       </InputRightElement>
 
       </InputGroup>
-
-
-
-      </ScaleFade>
+      </Collapse>
 
   </ChakraProvider>
     );
