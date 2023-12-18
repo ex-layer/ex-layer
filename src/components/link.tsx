@@ -48,13 +48,13 @@ const LinkSheet: FunctionComponent = () => {
       <InputGroup size ='md' className = "mt-4">
 
   
-      <Input value = {value} pr ='4.5rem' onChange={handleChange} placeholder="spreadsheet URL "/>
+      <Input value = {value} pr ='5.5rem' onChange={handleChange} placeholder="spreadsheet URL "/>
       <InputRightElement width='4.5rem'>
         <Button h='1.75rem' size='sm' onClick={handleClick}>
           {arrow}
         </Button>
       </InputRightElement>
-      
+
       </InputGroup>
       </Collapse>
 
