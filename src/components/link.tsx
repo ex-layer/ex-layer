@@ -1,11 +1,11 @@
 'use client'
-import { ChakraProvider, useBoolean, Input, Button, Fade, InputGroup, InputRightElement } from '@chakra-ui/react'
+import { ChakraProvider, useBoolean, Input, Button, Collapse, Fade, InputGroup, InputRightElement } from '@chakra-ui/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { createContext } from 'react'
 import {FunctionComponent } from 'react'
 
-
+// Typescript Code
 var url : string = "";
 
 const LinkSheet: FunctionComponent = () => {
@@ -13,6 +13,7 @@ const LinkSheet: FunctionComponent = () => {
   const arrow : String = "->"
 
   const isValidUrl = (urlString: string): boolean => {
+    // If URL is valid
     try { 
       return Boolean(new URL(urlString)); 
     } catch (e) { 
@@ -41,20 +42,21 @@ const LinkSheet: FunctionComponent = () => {
  return (
   <ChakraProvider>
       <Button colorScheme='messenger' onClick={bool.toggle}>Link existing data layer</Button>
-      <Fade in={pressed}>
+      <Collapse in={pressed} animateOpacity>
+
+
       <InputGroup size ='md' className = "mt-4">
 
-        
+  
       <Input value = {value} pr ='4.5rem' onChange={handleChange} placeholder="spreadsheet URL "/>
       <InputRightElement width='4.5rem'>
         <Button h='1.75rem' size='sm' onClick={handleClick}>
           {arrow}
         </Button>
       </InputRightElement>
-
+      
       </InputGroup>
-
-      </Fade>
+      </Collapse>
 
   </ChakraProvider>
     );
