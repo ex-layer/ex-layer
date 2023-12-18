@@ -41,10 +41,8 @@ const LinkSheet: FunctionComponent = () => {
 
  return (
   <ChakraProvider>
-      <Button colorScheme='messenger' onClick={bool.toggle}>Link existing data layer</Button>
+      <Button colorScheme='whatsapp'borderRadius='32' fontSize ='16px' onClick={bool.toggle}>Link existing data layer</Button>
       <Collapse in={pressed} animateOpacity>
-
-
       <InputGroup size ='md' className = "mt-4">
 
   
