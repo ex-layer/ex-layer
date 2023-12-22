@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  ex-layer:
+    build: .
+    ports:
+      - 80:80
+  #   depends_on:
+  #     - redis
+  # redis:
+  #   image: redis:alpine
