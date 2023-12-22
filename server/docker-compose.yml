@@ -3,8 +3,8 @@ services:
   ex-layer:
     build: .
     ports:
-      - 5000:5000
-    depends_on:
-      - redis
-  redis:
-    image: redis:alpine
+      - 80:80
+  #   depends_on:
+  #     - redis
+  # redis:
+  #   image: redis:alpine
