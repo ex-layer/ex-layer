@@ -1,33 +1,30 @@
 // components/DashboardTopper.tsx
 'use client'
 import React, { useEffect, useState } from 'react';
-import { Flex, Box, Stat, StatLabel, StatNumber, StatHelpText, useColorMode, Slider } from '@chakra-ui/react';
+import { Flex, Box, Stat, StatLabel, StatNumber, StatHelpText, useColorMode, Slider, Select } from '@chakra-ui/react';
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
+import DashboardStats from './dashboard_stats';
 
 Chart.register(...registerables);
 
-const generateRandomProfitsData = () => {
-  return Array.from({ length: 12 }, () => Math.floor(Math.random() * 10000));
-};
-
-const DashboardTopper: React.FC = () => {
+const DashboardTopper: React.FC<{ revenueList: Revenue[] }> = ({ revenueList }) => {
   const { colorMode } = useColorMode();
-  const [profits, setProfits] = useState<number[]>([]);
   const [timeScale, setTimeScale] = useState<number>(12);
-
-  useEffect(() => {
-    setProfits(generateRandomProfitsData());
-  }, []);
 
   const textColor = colorMode === 'light' ? 'black' : 'white';
 
+  // Ensure that revenueList is not undefined or null before using slice
+  const slicedRevenueList = revenueList ? revenueList.slice(0, timeScale) : [];
+  console.log('revenueList:', revenueList);
+  console.log('slicedRevenueList:', slicedRevenueList);
+
   const data = {
-    labels: Array.from({ length: timeScale }, (_, i) => `Month ${i + 1}`),
+    labels: slicedRevenueList.map((revenue) => revenue.date?.toLocaleDateString() ?? ''),
     datasets: [
       {
         label: 'Profits Over Time',
-        data: profits.slice(0, timeScale),
+        data: slicedRevenueList.map((revenue) => revenue.amount), // Make sure 'amount' is a number
         borderColor: '#8BC34A', // Lighter green color
         backgroundColor: '#68D391', // Lighter green background
       },
@@ -35,6 +32,17 @@ const DashboardTopper: React.FC = () => {
   };
 
   const options = {
+    plugins: {  
+      legend: {
+        labels: {
+          color: colorMode === 'light' ? 'black' : 'white',
+
+          font: {
+            size: 14
+          }
+        }
+      }
+    },
     scales: {
       y: {
         type: 'linear',
@@ -65,9 +73,15 @@ const DashboardTopper: React.FC = () => {
   const changeInRevenue = 1500;
   const changeInExpenses = -800;
 
+  const handleTimelineChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedTimeline = parseInt(event.target.value, 10);
+    setTimeScale(selectedTimeline);
+  };
+
   return (
     <Flex
       direction={{ base: 'column-reverse', md: 'row' }}
+      position='relative'
       p={4}
       bg={colorMode === 'light' ? '#FFFFFF' : 'gray.800'}
       borderRadius="md"
@@ -75,38 +89,20 @@ const DashboardTopper: React.FC = () => {
       align="left"
       justify={{ base: 'flex-start', md: 'space-between' }}
     >
-      <Box width={{ base: '100%', md: '45%' }} p={4} bg={colorMode === 'light' ? '#FFFFFF' : 'gray.800'} borderRadius="md" boxShadow="md" mb={{ base: '4', md: '0' }}>
-        <Stat>
-          <StatLabel color="#37474F">Most Sold Categories</StatLabel>
-          <StatNumber color={textColor}>{mostSoldCategories.join(', ')}</StatNumber>
-          <StatHelpText color="#607D8B">Top categories in sales</StatHelpText>
-        </Stat>
 
-        <Stat mt={4}>
-          <StatLabel color="#37474F">Change in Revenue</StatLabel>
-          <StatNumber color={textColor}>${changeInRevenue}</StatNumber>
-          <StatHelpText color="#607D8B">Compared to the previous period</StatHelpText>
-        </Stat>
-
-        <Stat mt={4}>
-          <StatLabel color="#37474F">Change in Expenses</StatLabel>
-          <StatNumber color={textColor}>${changeInExpenses}</StatNumber>
-          <StatHelpText color="#607D8B">Compared to the previous period</StatHelpText>
-        </Stat>
-      </Box>
-
-      <Box width={{ base: '100%', md: '50%' }} p={4} bg={colorMode === 'light' ? '#FFFFFF' : 'gray.800'} borderRadius="md" boxShadow="md" mb={{ base: '4', md: '0' }}>
+        <DashboardStats revenueList={revenueList}/>
+        <Box
+        width={{ base: '100%', md: '50%' }}
+        p={4}
+        bg={colorMode === 'light' ? '#FFFFFF' : 'gray.800'}
+        borderRadius="md"
+        boxShadow="md"
+        mb={{ base: '4', md: '0' }}
+        position="relative"
+      >
         <Box height="100%">
-          <Line data={data} options={options} height={null} />
-          <Slider
-            aria-label="Time Scale Slider"
-            min={1}
-            max={profits.length}
-            defaultValue={timeScale}
-            onChange={(value) => setTimeScale(value)}
-            mt={2}
-            colorScheme="green"
-          />
+          <Line data={data} options={options} />
+          
         </Box>
       </Box>
     </Flex>

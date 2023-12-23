@@ -13,12 +13,17 @@ import {
   IconButton,
   InputGroup,
   InputLeftAddon,
+  useColorMode,
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FaCalendarAlt, FaPlus, FaMinus, FaDollarSign } from 'react-icons/fa';
 
 const ExpenseInputForm = () => {
+
+  // const { colorMode } = useColorMode();
+  // const textColor = colorMode === 'light' ? 'black' : 'white';
+
   const [formData, setFormData] = useState<any>({
     amount: '',
     date: null,
@@ -160,6 +165,7 @@ const handleCategoryChange = (index: number, field: string, value: string) => {
             ))}
 
             <Button
+            
               variant="link"
               colorScheme="teal"
               size="sm"
