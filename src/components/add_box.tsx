@@ -170,7 +170,7 @@ const handleCategoryChange = (index: number, field: string, value: string) => {
               Add Category
             </Button>
           </FormControl>
-          <Button colorScheme="teal" type="submit">
+          <Button colorScheme="green" type="submit">
             Submit
           </Button>
         </Stack>

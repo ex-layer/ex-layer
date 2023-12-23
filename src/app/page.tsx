@@ -77,13 +77,10 @@ const App = () => {
   return (
     <ChakraProvider>
       <main>
+       
         <Navbar />
         <DashboardTopper revenueList={mockRevenues}/>
         <TransactionBox revenueList={mockRevenues}/>
-        <Flex justify="space-between" p={8}>
-          <Add_Box />
-          <Minus_Box />
-        </Flex>
       </main>
     </ChakraProvider>
   );

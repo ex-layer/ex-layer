@@ -119,7 +119,16 @@ const handleCategoryChange = (index: number, field: string, value: string) => {
               placeholderText="Select date"
               customInput={<Input />}
               dateFormat="MMMM d, yyyy"
-              popperPlacement="right-start" // Position the datepicker to pop out to the right
+              popperPlacement="right-start"
+              popperModifiers={{
+                preventOverflow: {
+                  enabled: true,
+                  escapeWithReference: false,
+                  boundariesElement: 'viewport',
+                },
+              }}
+              // Set the maximum width for the DatePicker
+              style={{ maxWidth: '100%' }}
             />
           </FormControl>
           <FormControl>
@@ -176,7 +185,7 @@ const handleCategoryChange = (index: number, field: string, value: string) => {
               Add Category
             </Button>
           </FormControl>
-          <Button colorScheme="teal" type="submit">
+          <Button colorScheme="green" type="submit">
             Submit
           </Button>
         </Stack>
