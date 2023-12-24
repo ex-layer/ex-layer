@@ -1,11 +1,13 @@
-import React from 'react';
+'use client'
+import React, { useState } from 'react';
 import { ChakraProvider, Flex } from '@chakra-ui/react';
 import Navbar from '@/components/Navbar';
-import Add_Box from '@/components/add_box';
-import DashboardTopper from '@/components/dashboard';
-import TransactionBox, { Revenue } from '@/components/transactions';
+import Add_Box from '@/components/data/add-data-box';
+import DashboardTopper from '@/components/insights/quick-insights';
+import TransactionBox, { Revenue } from '@/components/data/transactions';
 const App = () => {
-  const mockRevenues: Revenue[] = [
+  const [revenues, setRevenues] = useState<Revenue[]>([
+
     {
       amount: 1000,
       date: new Date('2023-01-01'),
@@ -159,9 +161,12 @@ const App = () => {
       ],
       type: 'expense', // This one is an expense
     }
-
     
-  ];
+  ]);
+
+  const updateRevenues = (newRevenues: Revenue[]) => { // Define a function to update this mockRevenue list
+    setRevenues(newRevenues);
+  };
   
   
   return (
@@ -169,8 +174,8 @@ const App = () => {
       <main>
        
         <Navbar />
-        <DashboardTopper revenueList={mockRevenues}/>
-        <TransactionBox revenueList={mockRevenues}/>
+        <DashboardTopper revenueList={revenues}/>
+        <TransactionBox revenueList={revenues}/>
       </main>
     </ChakraProvider>
   );

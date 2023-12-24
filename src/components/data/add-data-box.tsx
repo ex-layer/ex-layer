@@ -1,6 +1,3 @@
-// Make sure to install @chakra-ui/react and react-icons
-// npm install @chakra-ui/react react-icons
-
 import React, { ChangeEvent, useState } from 'react';
 import {
   Select,

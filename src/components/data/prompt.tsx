@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Stack, Button, ChakraProvider, extendTheme, CSSReset, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton } from '@chakra-ui/react';
-import { motion, AnimatePresence } from 'framer-motion';
-import Add_Box from '@/components/add_box'; // Replace with the actual path to your Add_Button component
-import AddFromTemplate from './add_from_template_box';
+import Add_Box from '@/components/data/add-data-box'; // Replace with the actual path to your Add_Button component
+import AddFromTemplate from './add-from-template_box';
 import { Revenue, RevenueListProps } from './transactions';
 
 const Prompt: React.FC = () => {
@@ -65,7 +64,6 @@ const Prompt: React.FC = () => {
           <ModalHeader>Add Data Manually</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {/* Render your Add_Button component here */}
             <Add_Box />
           </ModalBody>
         </ModalContent>
@@ -77,7 +75,6 @@ const Prompt: React.FC = () => {
           <ModalHeader>Add Data From a Template</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {/* Render your Add_Button component here */}
             <AddFromTemplate revenueList={mockRevenues} newList ={newList} setNewList={setNewList} />
           </ModalBody>
         </ModalContent>

@@ -5,7 +5,7 @@ import { Link, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTable, useSortBy } from 'react-table';
 import { FaLongArrowAltRight } from 'react-icons/fa';
 import { BiEdit, BiTrash } from 'react-icons/bi'; // Import icons for edit and delete
-import Prompt from './add_prompt';
+import Prompt from './prompt';
 import {
 
   Box,

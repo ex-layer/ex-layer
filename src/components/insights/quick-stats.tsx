@@ -1,9 +1,16 @@
-'use client'
+// File: quick-stats.tsx
+// Description: This file contains the DashboardStats component, which is responsible for rendering
+// and calculating quick stats. Later on, we should make this component customizable. 
+
+
 import React from 'react';
 import { Box, Stat, StatLabel, StatNumber, StatHelpText, useColorMode } from '@chakra-ui/react';
-import { Revenue } from './transactions';
-
-const DashboardStats: React.FC<{ revenueList: Revenue[] }> = ({ revenueList }) => {
+import { Revenue } from '../data/transactions';
+interface DashboardStatsProps {
+  revenueList: Revenue[]
+}
+const DashboardStats = (props : DashboardStatsProps) => {
+  const {revenueList} = props
   const { colorMode } = useColorMode();
   const isLightMode = colorMode === 'light';
   const outlineColor = isLightMode ? 'black' : 'white';
@@ -39,6 +46,7 @@ const DashboardStats: React.FC<{ revenueList: Revenue[] }> = ({ revenueList }) =
   };
 
   const { totalRevenue, totalExpenses } = calculateChange();
+
   return (
     <Box
       width={{ base: '100%', md: '48%' }}
