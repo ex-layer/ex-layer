@@ -1,12 +1,13 @@
 // components/DashboardTopper.tsx
 'use client'
 import React, { useEffect, useState } from 'react';
-import { Flex, Box, Stat, Text , StatLabel, StatNumber, StatHelpText, useColorMode, Slider, Select } from '@chakra-ui/react';
+import { Flex, Box, Stat, Text , StatLabel, StatNumber, StatHelpText, useColorMode, Slider, Select, useColorModeValue, Link } from '@chakra-ui/react';
 import { Line } from 'react-chartjs-2';
-import { Chart, registerables } from 'chart.js';
+import Chart from 'react-apexcharts';
 import DashboardStats from './dashboard_stats';
+import { FaLongArrowAltRight } from 'react-icons/fa';
+import { Revenue } from './transactions';
 
-Chart.register(...registerables);
 const DashboardTopper: React.FC<{ revenueList: Revenue[] }> = ({ revenueList }) => {
   const { colorMode } = useColorMode();
   
@@ -18,126 +19,120 @@ const DashboardTopper: React.FC<{ revenueList: Revenue[] }> = ({ revenueList }) 
   const slicedRevenueList = revenueList ? revenueList.slice(0, timeScale) : [];
   console.log('revenueList:', revenueList);
   console.log('slicedRevenueList:', slicedRevenueList);
-
-  const data = {
-    labels: slicedRevenueList.map((revenue) => revenue.date?.toLocaleDateString() ?? ''),
-    datasets: [
+  const chartOptions = {
+    chart: {
+      fontFamily: 'Jost, sans-serif', // Specify the font family with fallback
+      background: 'transparent',
+    },
+    tooltip: {
+      theme: colorMode === 'light' ? 'light' : 'dark',
+      style: {
+        fontSize: '14px',
+      },
+    },
+    colors: [colorMode === 'light' ? '#68D391' : '#8BC34A'],
+    xaxis: {
+      categories: slicedRevenueList.map((revenue) => revenue.date?.toLocaleDateString() ?? ''),
+      title: {
+        
+        text: 'Months',
+        style: {
+          color: colorMode === 'light' ? 'black' : 'white',
+          fontSize: '14px',
+        },
+      },
+      labels: {
+        show: !(window.innerWidth <= 480),
+        style: {
+          colors: colorMode === 'light' ? 'black' : 'white',
+          fontSize: '14px',
+        },
+      },
+    },
+    yaxis: {
+      title: {
+        text: 'Profits',
+        style: {
+          color: colorMode === 'light' ? 'black' : 'white',
+          fontSize: '14px',
+        },
+      },
+      labels: {
+        show:  !(window.innerWidth <= 480),
+        style: {
+          colors: colorMode === 'light' ? 'black' : 'white',
+          fontSize: '14px',
+        },
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    markers: {
+      size: 5,
+    },
+    responsive: [
       {
-        label: 'Profits Over Time',
-        data: slicedRevenueList.map((revenue) => revenue.amount), // Make sure 'amount' is a number
-        borderColor: '#8BC34A', // Lighter green color
-        backgroundColor: '#68D391', // Lighter green background
+        breakpoint: 480, // Adjust the breakpoint as needed
+        options: {
+          chart: {
+            height: 300, // Adjust the height for smaller screens
+          },
+        },
       },
     ],
-  };
-
-  const options = {
-    plugins: {
-      legend: {
-        labels: {
-          color: colorMode === 'light' ? 'black' : 'white',
-          font: {
-            size: 15,
-            family: 'Jost',
-          },
-        },
-      },
-    },
-    scales: {
-      y: {
-        grid: {
-          color: colorMode === 'light' ? '#00000080' : '#FFFFFF80',
-        },
-        type: 'linear',
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: 'Profits',
-          color: colorMode === 'light' ? 'black' : 'white',
-          font: {
-            family: 'Jost',
-          },
-        },
-        ticks: {
-          color: colorMode === 'light' ? 'black' : 'white',
-          font: {
-            family: 'Jost',
-          },
-        },
-      },
-      x: {
-        grid: {
-          color: colorMode === 'light' ? '#00000080' : '#FFFFFF80',
-        },
-        title: {
-          display: true,
-          text: 'Months',
-          color: colorMode === 'light' ? 'black' : 'white',
-          font: {
-            family: 'Jost',
-          },
-        },
-        ticks: {
-          color: colorMode === 'light' ? 'black' : 'white',
-          font: {
-            family: 'Jost',
-          },
-        },
-      },
-    },
-    elements: {
-      line: {
-        tension: 0.4, // Adjust the tension to control the curve
-      },
-      point: {
-        radius: 5, // Increase the radius of data points
-        borderWidth: 2, // Increase the border width of data points
-        backgroundColor: colorMode === 'light' ? '#00000080' : '#FFFFFF80', // Set the background color of data points
-        borderColor: colorMode === 'light' ? '#000000' : '#FFFFFF', // Set the border color of data points
-      },
-    },
-    layout: {
-      padding: {
-        left: 10,
-        right: 10,
-        top: 10,
-        bottom: 10,
-      },
-    },
-    animation: {
-      duration: 1500, // Adjust the animation duration
-    },
-    responsive: true, // Make the chart responsive
-    maintainAspectRatio: true, // Maintain aspect ratio
-    aspectRatio: 2, // Adjust the aspect ratio
-    devicePixelRatio: 1
+    maintainAspectRatio: false, // Disable maintaining aspect ratio
   };
   
+  const series = [
+    {
+      name: 'Profits Over Time',
+      data: slicedRevenueList.map((revenue) => revenue.amount),
+    },
+  ];
+  const cardBackgroundColor = useColorModeValue('white', 'gray.800');
+  const cardBorderColor = useColorModeValue('gray.200', 'gray.600');
 
-  const mostSoldCategories = ['Category A', 'Category B', 'Category C'];
-  const changeInRevenue = 1500;
-  const changeInExpenses = -800;
-
-  const handleTimelineChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedTimeline = parseInt(event.target.value, 10);
-    setTimeScale(selectedTimeline);
-  };
 
   return (
     <main>
-      <Box>
-        <Text p={4} fontSize="3xl" fontWeight="bold">
-          Insights
-        </Text>
+         <Box
+         borderWidth="1px"
+         borderRadius="lg"
+         overflow="hidden"
+         boxShadow="lg"
+         borderColor={cardBorderColor}
+         bg={cardBackgroundColor}
+         m={4}
+         >
+
+<      Box>
+        <Flex align="center">
+          <Text p={4} fontSize="3xl" fontWeight="bold">
+            Quick Insights
+          </Text>
+          <Box ml={1}>
+            <Link
+              href="#your-link-url" // Replace with the actual link URL
+              _hover={{ textDecoration: 'none', color: 'teal.500', transition: 'color 0.3s ease' }} // Remove underline on hover
+              display="inline-block"
+            >
+              <Text fontSize="sm" borderBottom="2px" display="inline" >
+                see more
+              </Text>
+            </Link>
+            <Box as={FaLongArrowAltRight} display="inline" ml={2} />
+          </Box>
+        </Flex>
       </Box>
 
+      
       <Flex
         direction={{ base: 'column-reverse', md: 'row' }}
         position="relative"
         p={4}
         bg={colorMode === 'light' ? '#FFFFFF' : 'gray.800'}
         borderRadius="md"
-        // boxShadow="md"
         align="left"
         justify={{ base: 'flex-start', md: 'space-between' }}
       >
@@ -148,18 +143,17 @@ const DashboardTopper: React.FC<{ revenueList: Revenue[] }> = ({ revenueList }) 
           p={4}
           bg={colorMode === 'light' ? '#FFFFFF' : 'gray.800'}
           borderRadius="1xl"
-         boxShadow="md"
+          boxShadow="md"
           mb={{ base: '4', md: '0' }}
           position="relative"
-         //  border="1px" // Add a border
-          borderColor={colorMode === 'light' ? 'black' : 'white'} // Set border color based on color mode
+          borderColor={colorMode === 'light' ? 'black' : 'white'}
         >
-          <Box height="100%">
-            <Line data={data} options={options} />
-          </Box>
+          <Chart options={chartOptions} series={series} type="line" height={350} />
         </Box>
       </Flex>
+      </Box>
     </main>
+  
   );
 };
 

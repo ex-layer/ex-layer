@@ -1,8 +1,9 @@
 // Make sure to install @chakra-ui/react and react-icons
 // npm install @chakra-ui/react react-icons
-'use client'
-import React, { useState } from 'react';
+
+import React, { ChangeEvent, useState } from 'react';
 import {
+  Select,
   Box,
   FormControl,
   FormLabel,
@@ -18,28 +19,45 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FaCalendarAlt, FaPlus, FaMinus, FaDollarSign } from 'react-icons/fa';
 
+export type FormData = {
+  type: 'Revenue' | 'Expense';
+  amount: number | '';
+  date: Date | null;
+  categories: { key: string; value: string }[];
+  quantity: number;
+};
+
+
 const RevenueInputForm = () => {
-  const [formData, setFormData] = useState<any>({
+  
+  const [formData, setFormData] = useState<FormData>({
+    type: 'Revenue', // Default type is Revenue
     amount: '',
     date: null,
-    categories: [
-      { key: '', value: '' },
-    ],
+    categories: [{ key: '', value: '' }],
     quantity: 1,
   });
+  
+  const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+    setFormData((prevData: FormData) => ({
+      ...prevData,
+      type: value as 'Revenue' | 'Expense',
+    }));
+  };
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prevData: any) => ({
+    setFormData((prevData: FormData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
-// ... (previous code)
 
 const handleCategoryChange = (index: number, field: string, value: string) => {
-  setFormData((prevData: any) => {
+  setFormData((prevData: FormData) => {
     const updatedCategories = [...prevData.categories];
     updatedCategories[index] = {
       ...updatedCategories[index],
@@ -52,25 +70,23 @@ const handleCategoryChange = (index: number, field: string, value: string) => {
   });
 };
 
-// ... (remaining code)
-
 
   const handleDateChange = (date: Date | null) => {
-    setFormData((prevData: any) => ({
+    setFormData((prevData: FormData) => ({
       ...prevData,
       date,
     }));
   };
 
   const handleAddCategory = () => {
-    setFormData((prevData: any) => ({
+    setFormData((prevData: FormData) => ({
       ...prevData,
       categories: [...prevData.categories, { key: '', value: '' }],
     }));
   };
 
   const handleRemoveCategory = (index: number) => {
-    setFormData((prevData: any) => {
+    setFormData((prevData: FormData) => {
       const updatedCategories = [...prevData.categories];
       updatedCategories.splice(index, 1);
       return {
@@ -83,29 +99,44 @@ const handleCategoryChange = (index: number, field: string, value: string) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle the submission of the form data
+
+
+
     console.log(formData);
   };
 
   return (
     <Box maxW="xl" m="auto" p={5} borderWidth="1px" borderRadius="lg" overflow="hidden">
-      <Heading as="h2" size="lg" mb={4}>
-        Revenue Input 
-      </Heading>
-      <form onSubmit={handleSubmit}>
-        <Stack spacing={6}>
-          <FormControl>
-            <FormLabel>Amount</FormLabel>
-            <InputGroup>
-              <InputLeftAddon children={<FaDollarSign />} />
-              <Input
-                type="number"
-                name="amount"
-                value={formData.amount}
-                onChange={handleInputChange}
-                placeholder="Enter amount"
-              />
-            </InputGroup>
-          </FormControl>
+    <Heading as="h2" size="lg" mb={4}>
+      Add a transaction
+    </Heading>
+    <form onSubmit={handleSubmit}>
+      <Stack spacing={6}>
+        <FormControl>
+          <FormLabel>Type</FormLabel>
+          <Select
+            name="type"
+            value={formData.type}
+            onChange={(e) => handleTypeChange(e)}
+            placeholder="Select Type"
+          >
+            <option value="Revenue">Revenue</option>
+            <option value="Expense">Expense</option>
+          </Select>
+        </FormControl>
+        <FormControl>
+          <FormLabel>Amount</FormLabel>
+          <InputGroup>
+            <InputLeftAddon children={<FaDollarSign />} />
+            <Input
+              type="number"
+              name="amount"
+              value={formData.amount}
+              onChange={handleInputChange}
+              placeholder="Enter amount"
+            />
+          </InputGroup>
+        </FormControl>
           <FormControl>
             <FormLabel>Date</FormLabel>
             <DatePicker
@@ -114,7 +145,7 @@ const handleCategoryChange = (index: number, field: string, value: string) => {
               placeholderText="Select date"
               customInput={<Input />}
               dateFormat="MMMM d, yyyy"
-              popperPlacement="right-start" // Position the datepicker to pop out to the right
+              popperPlacement="auto" // Position the datepicker to pop out to the right
             />
           </FormControl>
           <FormControl>

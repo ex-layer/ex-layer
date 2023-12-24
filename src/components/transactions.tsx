@@ -1,8 +1,9 @@
 // FullCode.tsx
 'use client'
 import React from 'react';
-import { Text } from '@chakra-ui/react';
+import { Link, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTable, useSortBy } from 'react-table';
+import { FaLongArrowAltRight } from 'react-icons/fa';
 import { BiEdit, BiTrash } from 'react-icons/bi'; // Import icons for edit and delete
 import Prompt from './add_prompt';
 import {
@@ -46,32 +47,32 @@ const columns = [
     accessor: 'categories',
     Cell: ({ value }: { value: any[] }) =>
       value.map((category, i) => (
-        <span key={i} className="category-cell">
-          {i > 0 && ', '}
+        <Text fontSize={['xs', 'sm', 'md']} key={i} className="category-cell">
+          {i > 0}
           {category.key}: {category.value}
-        </span>
+        </Text>
       )),
-    // Set responsive font size for mobile
-    style: { fontSize: ['xs', 'sm', 'md'] },
+
   },
   {
     Header: 'Amount',
     accessor: 'amount',
     Cell: ({ value }: { value: number }) => (
-      <span style={{ color: value < 0 ? 'red' : 'green' }}>
+      <Text fontSize={['xs', 'sm', 'md']} style={{ color: value < 0 ? 'red' : 'green' }}>
         {value < 0 ? '- $' : '+ $'}
         {Math.abs(value)}
-      </span>
+      </Text>
     ),
-    // Set responsive font size for mobile
-    style: { fontSize: ['xs', 'sm', 'md'] },
+
   },
   {
     Header: 'Date',
     accessor: 'date',
-    Cell: ({ value }: { value: Date }) => value?.toLocaleDateString(),
-    // Set responsive font size for mobile
-    style: { fontSize: ['xs', 'sm', 'md'] },
+    Cell: ({ value }: { value: Date }) => 
+    <Text fontSize={['xs', 'sm', 'md']}>
+    {value?.toLocaleDateString()}
+  
+    </Text>
   },
   {
     Header: 'Action',
@@ -112,15 +113,45 @@ const RevenueList: React.FC<RevenueListProps> = ({ revenueList }) => {
     rows,
     prepareRow,
   } = useTable({ columns, data: revenueList }, useSortBy);
+  const cardBackgroundColor = useColorModeValue('white', 'gray.800');
+  const cardBorderColor = useColorModeValue('gray.200', 'gray.600');
 
   return (
     <main>
-          <Box>
-        <Text p={4} fontSize="3xl" fontWeight="bold">
-          Data
-        </Text>
+     <Box
+         borderWidth="1px"
+         borderRadius="lg"
+         overflow="hidden"
+         boxShadow="lg"
+         borderColor={cardBorderColor}
+         bg={cardBackgroundColor}
+         m={4}
+         >
+         
+
+        <Box>
+        <Flex align="center">
+          <Text p={4} fontSize="3xl" fontWeight="bold">
+            Data
+          </Text>
+          <Box ml={1}>
+            <Link
+              href="#your-link-url" // Replace with the actual link URL
+              _hover={{ textDecoration: 'none', color: 'teal.500', transition: 'color 0.3s ease' }} // Remove underline on hover
+              display="inline-block"
+            >
+              <Text fontSize="sm" borderBottom="2px" display="inline" >
+                manage your data
+              </Text>
+            </Link>
+            <Box as={FaLongArrowAltRight} display="inline" ml={2} />
+          </Box>
+        </Flex>
       </Box>
+
+
     <Box  
+    
       borderColor={colorMode === 'light' ? 'black' : 'white'}
       mx={[2, 3, 4]}
       p={[2, 3, 4]}
@@ -130,13 +161,20 @@ const RevenueList: React.FC<RevenueListProps> = ({ revenueList }) => {
       maxHeight="400px"
       position="relative"
       boxShadow="md"
+      maxWidth="100%"  // Set maximum width to 100% of the container
+      marginX="auto"   // Center the box horizontally
     >
+
       <Table variant="simple" size={['xs', 'sm', 'md']} {...getTableProps()}>
         <Thead>
           {headerGroups.map((headerGroup) => (
             <Tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
               {headerGroup.headers.map((column) => (
                 <Th
+                p={0.5}
+                fontSize={['xs', 'sm', 'md']} 
+                borderBottomWidth="0.5px"
+                borderColor={colorMode === 'light' ? 'gray.300' : 'gray.600'}
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   width={column.id === 'action' ? column.width : undefined}
                   key={column.id}
@@ -151,9 +189,9 @@ const RevenueList: React.FC<RevenueListProps> = ({ revenueList }) => {
           {rows.map((row) => {
             prepareRow(row);
             return (
-              <Tr {...row.getRowProps()} key={row.id}>
+              <Tr border="0px"  borderColor={colorMode === 'light' ? 'gray.300' : 'gray.600'}{ ...row.getRowProps()} key={row.id}>
                 {row.cells.map((cell) => (
-                  <Td {...cell.getCellProps()} key={cell.column.id}>
+                  <Td border="0px"  borderColor={colorMode === 'light' ? 'gray.300' : 'gray.600'} {...cell.getCellProps()} key={cell.column.id}>
                     {cell.column.id === 'action' ? (
                       <Flex align="center" justify="space-around">
                         {/* Edit Button */}
@@ -191,6 +229,9 @@ const RevenueList: React.FC<RevenueListProps> = ({ revenueList }) => {
       
     </Box>
     <Prompt/>
+
+
+    </Box>
   </main>
   );
 };

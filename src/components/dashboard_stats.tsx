@@ -15,14 +15,14 @@ const DashboardStats: React.FC<{ revenueList: Revenue[] }> = ({ revenueList }) =
     revenue.categories.forEach((category: { key: string; value: string }) => {
       const { key, value } = category;
       const currentValue = mostSoldCategories.get(value) || 0;
-      mostSoldCategories.set(value, currentValue + parseFloat(revenue.amount) || 0);
+      mostSoldCategories.set(value, currentValue + (revenue.amount || 0));
     });
   });
 
   // Sort categories based on total values in descending order
   const sortedCategories = [...mostSoldCategories.entries()]
-    .sort(([, valueA], [, valueB]) => valueB - valueA)
-    .map(([category]) => category);
+  .sort(([, valueA]: [string, number], [, valueB]: [string, number]) => valueB - valueA)
+  .map(([category]: [string, number]) => category);
 
   // Calculate change in revenue and expenses
   const calculateChange = () => {
@@ -30,9 +30,9 @@ const DashboardStats: React.FC<{ revenueList: Revenue[] }> = ({ revenueList }) =
     let totalExpenses = 0;
 
     revenueList.forEach((revenue) => {
-      totalRevenue += parseFloat(revenue.amount) || 0;
+      totalRevenue += revenue.amount || 0;
       // Assuming that expenses are represented as negative values in the amount property
-      totalExpenses += Math.min(parseFloat(revenue.amount) || 0, 0);
+      totalExpenses += Math.min(revenue.amount || 0, 0);
     });
 
     return { totalRevenue, totalExpenses };
