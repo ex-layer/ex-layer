@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
-import { Box, Stack, Button, ChakraProvider, extendTheme, CSSReset, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton } from '@chakra-ui/react';
-import Add_Box from '@/components/data/add-data'; // Replace with the actual path to your Add_Button component
+import {
+  Box,
+  Stack,
+  Button,
+  ChakraProvider,
+  extendTheme,
+  CSSReset,
+} from '@chakra-ui/react';
+import Add_Box from '@/components/data/add-data';
 import AddFromTemplate from './add-from-template';
-import { Revenue, RevenueListProps } from './transactions';
+import ModalWrapper from '../misc/modal_wrapper';
+import { Revenue } from './transactions';
 
 const Prompt: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
+  const [activeModal, setActiveModal] = useState<null | 'manual' | 'template'>(
+    null
+  );
   const [newList, setNewList] = useState<Revenue[]>([]);
 
-  // testing purposes, pull real saved revenues from the backend
   const mockRevenues: Revenue[] = [
     {
       amount: 1000,
@@ -19,6 +27,7 @@ const Prompt: React.FC = () => {
         { key: 'Category2', value: 'Value2' },
       ],
       type: 'revenue', // This one is revenue
+      payment_id:3
     },
     {
       amount: 1500,
@@ -28,20 +37,16 @@ const Prompt: React.FC = () => {
         { key: 'Category3', value: 'Value3' },
       ],
       type: 'revenue', // This one is revenue
+      payment_id:7
     },
   ]
-  const handleAddDataClick = () => {
-    setIsModalOpen(true);
-  };
-  const handleAddTemplateDataClick = () => {
-    setIsTemplateModalOpen(true);
+
+  const handleModalOpen = (type: 'manual' | 'template') => {
+    setActiveModal(type);
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-  const handleTemplateCloseModal = () => {
-    setIsTemplateModalOpen(false);
+    setActiveModal(null);
   };
 
   return (
@@ -49,38 +54,48 @@ const Prompt: React.FC = () => {
       <CSSReset />
       <Box m="5" textAlign="center">
         <Stack mt={2} spacing={4} direction="row">
-          <Button fontSize={['xs', 'sm', 'md']} colorScheme="green" size="md" onClick={handleAddDataClick}>
+          <Button
+            fontSize={['xs', 'sm', 'md']}
+            colorScheme="green"
+            size="md"
+            onClick={() => handleModalOpen('manual')}
+          >
             + Add Data Manually
           </Button>
-          <Button  fontSize={['xs', 'sm', 'md']} colorScheme="green" size="md" onClick={handleAddTemplateDataClick}>
+          <Button
+            fontSize={['xs', 'sm', 'md']}
+            colorScheme="green"
+            size="md"
+            onClick={() => handleModalOpen('template')}
+          >
             + Add Data From Template
           </Button>
         </Stack>
       </Box>
 
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal} size="xl">
-        <ModalOverlay/>
-        <ModalContent>
-          <ModalHeader>Add Data Manually</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Add_Box />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+      <ModalWrapper
+        isOpen={activeModal === 'manual'}
+        onClose={handleCloseModal}
+        title="Add Data Manually"
+      >
+        <Add_Box />
+      </ModalWrapper>
 
-      <Modal isOpen={isTemplateModalOpen} onClose={handleTemplateCloseModal} size="2xl">
-        <ModalOverlay/>
-        <ModalContent>
-          <ModalHeader>Add Data From a Template</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <AddFromTemplate revenueList={mockRevenues} newList ={newList} setNewList={setNewList} />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+      <ModalWrapper
+        isOpen={activeModal === 'template'}
+        onClose={handleCloseModal}
+        title="Add Data From Template"
+      >
+        <AddFromTemplate
+          revenueList={mockRevenues}
+          newList={newList}
+          setNewList={setNewList}
+        />
+      </ModalWrapper>
     </ChakraProvider>
   );
 };
 
 export default Prompt;
+
+

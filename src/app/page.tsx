@@ -16,6 +16,7 @@ const App = () => {
         { key: 'Category2', value: 'Value2' },
       ],
       type: 'revenue', // This one is revenue
+      payment_id:1
     },
     {
       amount: 1500,
@@ -25,6 +26,7 @@ const App = () => {
         { key: 'Category3', value: 'Value3' },
       ],
       type: 'revenue', // This one is revenue
+      payment_id:2
     },
     {
       amount: -800, // Make the amount negative for expenses
@@ -34,6 +36,7 @@ const App = () => {
         { key: 'Category4', value: 'Value4' },
       ],
       type: 'expense', // This one is an expense
+      payment_id:3
     },
     {
       amount: 1500,
@@ -43,6 +46,7 @@ const App = () => {
         { key: 'Category3', value: 'Value3' },
       ],
       type: 'revenue', // This one is revenue
+      payment_id:4
     },
     {
       amount: -800, // Make the amount negative for expenses
@@ -52,6 +56,7 @@ const App = () => {
         { key: 'Category4', value: 'Value4' },
       ],
       type: 'expense', // This one is an expense
+      payment_id:5
     },
     {
       amount: 1500,
@@ -61,6 +66,7 @@ const App = () => {
         { key: 'Category3', value: 'Value3' },
       ],
       type: 'revenue', // This one is revenue
+      payment_id:6
     },
     {
       amount: -800, // Make the amount negative for expenses
@@ -70,6 +76,7 @@ const App = () => {
         { key: 'Category4', value: 'Value4' },
       ],
       type: 'expense', // This one is an expense
+      payment_id:7
     },
     {
       amount: 1500,
@@ -79,6 +86,7 @@ const App = () => {
         { key: 'Category3', value: 'Value3' },
       ],
       type: 'revenue', // This one is revenue
+      payment_id:8
     },
     {
       amount: -800, // Make the amount negative for expenses
@@ -88,6 +96,7 @@ const App = () => {
         { key: 'Category4', value: 'Value4' },
       ],
       type: 'expense', // This one is an expense
+      payment_id:9
     },
     {
       amount: 1500,
@@ -97,6 +106,7 @@ const App = () => {
         { key: 'Category3', value: 'Value3' },
       ],
       type: 'revenue', // This one is revenue
+      payment_id:10
     },
     {
       amount: -800, // Make the amount negative for expenses
@@ -106,6 +116,7 @@ const App = () => {
         { key: 'Category4', value: 'Value4' },
       ],
       type: 'expense', // This one is an expense
+      payment_id:11
     },
     {
       amount: 1500,
@@ -115,6 +126,7 @@ const App = () => {
         { key: 'Category3', value: 'Value3' },
       ],
       type: 'revenue', // This one is revenue
+      payment_id:12
     },
     {
       amount: -800, // Make the amount negative for expenses
@@ -124,6 +136,7 @@ const App = () => {
         { key: 'Category4', value: 'Value4' },
       ],
       type: 'expense', // This one is an expense
+      payment_id:13
     },
     {
       amount: 1500,
@@ -133,6 +146,7 @@ const App = () => {
         { key: 'Category3', value: 'Value3' },
       ],
       type: 'revenue', // This one is revenue
+      payment_id:14
     },
     {
       amount: -800, // Make the amount negative for expenses
@@ -142,6 +156,7 @@ const App = () => {
         { key: 'Category4', value: 'Value4' },
       ],
       type: 'expense', // This one is an expense
+      payment_id:15
     },
     {
       amount: 1500,
@@ -151,6 +166,7 @@ const App = () => {
         { key: 'Category3', value: 'Value3' },
       ],
       type: 'revenue', // This one is revenue
+      payment_id:16
     },
     {
       amount: -800, // Make the amount negative for expenses
@@ -160,6 +176,7 @@ const App = () => {
         { key: 'Category4', value: 'Value4' },
       ],
       type: 'expense', // This one is an expense
+      payment_id:17
     }
     
   ]);
@@ -167,7 +184,6 @@ const App = () => {
   const updateRevenues = (newRevenues: Revenue[]) => { // Define a function to update this mockRevenue list
     setRevenues(newRevenues);
   };
-  
   
   return (
     <ChakraProvider>
