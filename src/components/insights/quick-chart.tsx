@@ -2,7 +2,6 @@
 // Description: This file contains the ProfitChart component, which is responsible for rendering
 // the quick insight's chart. Chart config can be found below in the variable chartOptions.
 
-
 import React from 'react';
 import {useColorMode} from '@chakra-ui/react';
 import Chart from 'react-apexcharts';

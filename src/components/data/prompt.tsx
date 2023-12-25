@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Stack, Button, ChakraProvider, extendTheme, CSSReset, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton } from '@chakra-ui/react';
-import Add_Box from '@/components/data/add-data-box'; // Replace with the actual path to your Add_Button component
-import AddFromTemplate from './add-from-template_box';
+import Add_Box from '@/components/data/add-data'; // Replace with the actual path to your Add_Button component
+import AddFromTemplate from './add-from-template';
 import { Revenue, RevenueListProps } from './transactions';
 
 const Prompt: React.FC = () => {

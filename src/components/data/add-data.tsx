@@ -1,3 +1,8 @@
+// File: add-data.tsx
+// Description: This file contains the DataInputForm component, which is form to add to 
+// the revenue list (all transactions). It takes revenue list of the current user as input (from db)
+// and modifies/deletes/adds entries to the database, while modifying the local copy of revenueList passed in.
+
 import React, { ChangeEvent, useState } from 'react';
 import {
   Select,
@@ -25,7 +30,7 @@ export type FormData = {
 };
 
 
-const RevenueInputForm = () => {
+const DataInputForm = () => {
   
   const [formData, setFormData] = useState<FormData>({
     type: 'Revenue', // Default type is Revenue
@@ -207,4 +212,4 @@ const handleCategoryChange = (index: number, field: string, value: string) => {
   );
 };
 
-export default RevenueInputForm;
+export default DataInputForm;

@@ -2,7 +2,6 @@
 // Description: This file contains the DashboardTopper component, which renders all info for
 // the quick insights section. revenueList is passed in, and when it changes, 
 
-
 'use client'
 import React from 'react';
 import { Flex, Box, Text, useColorMode, useColorModeValue, Link } from '@chakra-ui/react';

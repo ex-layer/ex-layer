@@ -2,18 +2,18 @@
 // Description: This file contains the DashboardStats component, which is responsible for rendering
 // and calculating quick stats. Later on, we should make this component customizable. 
 
-
 import React from 'react';
 import { Box, Stat, StatLabel, StatNumber, StatHelpText, useColorMode } from '@chakra-ui/react';
 import { Revenue } from '../data/transactions';
 interface DashboardStatsProps {
   revenueList: Revenue[]
 }
+
 const DashboardStats = (props : DashboardStatsProps) => {
   const {revenueList} = props
   const { colorMode } = useColorMode();
   const isLightMode = colorMode === 'light';
-  const outlineColor = isLightMode ? 'black' : 'white';
+  const outlineColor = isLightMode ? 'black' : 'white'; 
   const textColor = isLightMode ? 'black' : 'white';
 
   // Calculate most sold categories and their total values

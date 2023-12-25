@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { ChakraProvider, Flex } from '@chakra-ui/react';
 import Navbar from '@/components/Navbar';
-import Add_Box from '@/components/data/add-data-box';
+import Add_Box from '@/components/data/add-data';
 import DashboardTopper from '@/components/insights/quick-insights';
 import TransactionBox, { Revenue } from '@/components/data/transactions';
 const App = () => {
@@ -175,7 +175,7 @@ const App = () => {
        
         <Navbar />
         <DashboardTopper revenueList={revenues}/>
-        <TransactionBox revenueList={revenues}/>
+        <TransactionBox revenueList={revenues} onEdit={updateRevenues}/>
       </main>
     </ChakraProvider>
   );
