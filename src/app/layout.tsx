@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Jost }  from 'next/font/google'
 import './globals.css'
 
-export const inter = Jost({ subsets: ['latin'] , weight: "400"})
+const inter = Jost({ subsets: ['latin'] , weight: "400"})
 
 export const metadata: Metadata = {
   title: 'ex-layer-demo',
