@@ -1,9 +1,4 @@
-// File: add-data.tsx
-// Description: This file contains the DataInputForm component, which is form to add to 
-// the revenue list (all transactions). It takes revenue list of the current user as input (from db)
-// and modifies/deletes/adds entries to the database, while modifying the local copy of revenueList passed in.
-
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState, useEffect } from 'react';
 import {
   Select,
   Box,
@@ -20,75 +15,103 @@ import {
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FaCalendarAlt, FaPlus, FaMinus, FaDollarSign } from 'react-icons/fa';
+import { Revenue } from './transactions';
 
-export type FormData = {
-  type: 'Revenue' | 'Expense';
-  amount: number | '';
-  date: Date | null;
-  categories: { key: string; value: string }[];
-  quantity: number;
+export type AddBoxProps = {
+  onSave: (newDataArray: Revenue[]) => void;
+  transactionList: (oldList : Revenue[])  => void
 };
-
-
-const DataInputForm = () => {
-  
-  const [formData, setFormData] = useState<FormData>({
-    type: 'Revenue', // Default type is Revenue
-    amount: '',
+type addRevenue = {
+  categories: Array<{
+      key: string;
+      value: string;
+  }>;
+  amount: number;
+  date: Date | null;
+  type: 'revenue' | 'expense';
+  payment_id: number;
+  quantity: number
+}
+const Add_Box: React.FC<AddBoxProps> = ({ transactionList, onSave }) => {
+  const [formData, setFormData] = useState<addRevenue>({
+    type: 'revenue', // Default type is Revenue
+    amount: 0,
     date: null,
     categories: [{ key: '', value: '' }],
-    quantity: 1,
+    quantity:1,
+    payment_id: 0
   });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
   
+    // Extract quantity from formData
+    const { quantity, amount, ...formDataWithoutQuantity } = formData;
+  
+    // Call onSave in a loop, quantity times
+    const newDataArray = Array.from({ length: quantity }, (_, index) => ({
+      ...formDataWithoutQuantity,
+      payment_id: Math.floor(Math.random() * 1000) + 201, // Generate a random number above 200
+      quantity: 1, // Set quantity to 1 for each iteration
+      amount: typeof amount === 'number' ? amount : 0, // Ensure amount is always a number
+    }));
+  
+    // Combine transactionList with newDataArray
+    const combinedData = [...transactionList, ...newDataArray];
+  
+    onSave(combinedData);
+  };
   const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
-    setFormData((prevData: FormData) => ({
+    setFormData((prevData: addRevenue) => ({
       ...prevData,
-      type: value as 'Revenue' | 'Expense',
+      type: value as 'revenue' | 'expense',
     }));
   };
-
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prevData: FormData) => ({
+
+    // Explicitly cast the value to a number if the input is for 'amount'
+    const numericValue =
+      name === 'amount' ? (value.trim() === '' ? '' : Number(value)) : value;
+
+    setFormData((prevData: addRevenue) => ({
       ...prevData,
-      [name]: value,
+      [name]: numericValue,
     }));
   };
 
-
-const handleCategoryChange = (index: number, field: string, value: string) => {
-  setFormData((prevData: FormData) => {
-    const updatedCategories = [...prevData.categories];
-    updatedCategories[index] = {
-      ...updatedCategories[index],
-      [field]: value,
-    };
-    return {
-      ...prevData,
-      categories: updatedCategories,
-    };
-  });
-};
-
+  const handleCategoryChange = (index: number, field: string, value: string) => {
+    setFormData((prevData: addRevenue) => {
+      const updatedCategories = [...prevData.categories];
+      updatedCategories[index] = {
+        ...updatedCategories[index],
+        [field]: value,
+      };
+      return {
+        ...prevData,
+        categories: updatedCategories,
+      };
+    });
+  };
 
   const handleDateChange = (date: Date | null) => {
-    setFormData((prevData: FormData) => ({
+    setFormData((prevData: addRevenue) => ({
       ...prevData,
       date,
     }));
   };
 
   const handleAddCategory = () => {
-    setFormData((prevData: FormData) => ({
+    setFormData((prevData: addRevenue) => ({
       ...prevData,
       categories: [...prevData.categories, { key: '', value: '' }],
     }));
   };
 
   const handleRemoveCategory = (index: number) => {
-    setFormData((prevData: FormData) => {
+    setFormData((prevData: addRevenue) => {
       const updatedCategories = [...prevData.categories];
       updatedCategories.splice(index, 1);
       return {
@@ -98,52 +121,43 @@ const handleCategoryChange = (index: number, field: string, value: string) => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // Handle the submission of the form data
-
-
-
-    console.log(formData);
-  };
-
   return (
     <Box maxW="xl" m="auto" p={5} borderWidth="1px" borderRadius="lg" overflow="hidden">
-    <Heading as="h2" size="lg" mb={4}>
-      Add a transaction
-    </Heading>
-    <form onSubmit={handleSubmit}>
-      <Stack spacing={6}>
-        <FormControl>
-          <FormLabel>Type</FormLabel>
-          <Select
-            name="type"
-            value={formData.type}
-            onChange={(e) => handleTypeChange(e)}
-            placeholder="Select Type"
-          >
-            <option value="Revenue">Revenue</option>
-            <option value="Expense">Expense</option>
-          </Select>
-        </FormControl>
-        <FormControl>
-          <FormLabel>Amount</FormLabel>
-          <InputGroup>
-            <InputLeftAddon children={<FaDollarSign />} />
-            <Input
-              type="number"
-              name="amount"
-              value={formData.amount}
-              onChange={handleInputChange}
-              placeholder="Enter amount"
-            />
-          </InputGroup>
-        </FormControl>
+      <Heading as="h2" size="lg" mb={4}>
+        Add a transaction
+      </Heading>
+      <form onSubmit={handleSubmit}>
+        <Stack spacing={6}>
+          <FormControl>
+            <FormLabel>Type</FormLabel>
+            <Select
+              name="type"
+              value={formData.type}
+              onChange={(e) => handleTypeChange(e)}
+              placeholder="Select Type"
+            >
+              <option value="Revenue">Revenue</option>
+              <option value="Expense">Expense</option>
+            </Select>
+          </FormControl>
+          <FormControl>
+            <FormLabel>Amount</FormLabel>
+            <InputGroup>
+              <InputLeftAddon children={<FaDollarSign />} />
+              <Input
+                type="number"
+                name="amount"
+                value={formData.amount}
+                onChange={handleInputChange}
+                placeholder="Enter amount"
+              />
+            </InputGroup>
+          </FormControl>
           <FormControl>
             <FormLabel>Date</FormLabel>
             <DatePicker
               selected={formData.date}
-              onChange={handleDateChange}
+              onChange={(date) => handleDateChange(date)}
               placeholderText="Select date"
               customInput={<Input />}
               dateFormat="MMMM d, yyyy"
@@ -162,18 +176,17 @@ const handleCategoryChange = (index: number, field: string, value: string) => {
           </FormControl>
           <FormControl>
             <FormLabel>Categories</FormLabel>
-            
+
             {formData.categories.map((category: any, index: number) => (
               <Stack key={index} direction="row" spacing={4}>
                 <Input
                   type="text"
                   name={`Category-${index}`}
-                  className = "mb-3"
+                  className="mb-3"
                   value={category.key}
                   onChange={(e) => handleCategoryChange(index, 'key', e.target.value)}
                   placeholder="Category"
                   size="sm"
-                  
                 />
                 <Input
                   type="text"
@@ -187,8 +200,8 @@ const handleCategoryChange = (index: number, field: string, value: string) => {
                   aria-label={`Remove Category ${index}`}
                   icon={<FaMinus />}
                   onClick={() => handleRemoveCategory(index)}
-                  size ="sm"
-              />
+                  size="sm"
+                />
               </Stack>
             ))}
 
@@ -212,4 +225,4 @@ const handleCategoryChange = (index: number, field: string, value: string) => {
   );
 };
 
-export default DataInputForm;
+export default Add_Box;

@@ -80,11 +80,17 @@ const ProfitChart = (props : ProfitChartProps) => {
       ],
       maintainAspectRatio: false, 
     };
-    
+    const data = revenueList.map((revenue) => {
+        if (revenue.type == "revenue") {
+            return revenue.amount
+        } else {
+            return revenue.amount*-1
+        }
+    })
     const series = [
       {
         name: 'Profits Over Time',
-        data: revenueList.map((revenue) => revenue.amount),
+        data: data,
       },
     ];
 

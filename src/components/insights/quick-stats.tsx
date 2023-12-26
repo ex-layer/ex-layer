@@ -19,11 +19,13 @@ const DashboardStats = (props : DashboardStatsProps) => {
   // Calculate most sold categories and their total values
   const mostSoldCategories: Map<string, number> = new Map();
   revenueList.forEach((revenue) => {
+    if (revenue.type == "revenue") {
     revenue.categories.forEach((category: { key: string; value: string }) => {
       const { key, value } = category;
       const currentValue = mostSoldCategories.get(value) || 0;
       mostSoldCategories.set(value, currentValue + (revenue.amount || 0));
     });
+  }
   });
 
   // Sort categories based on total values in descending order

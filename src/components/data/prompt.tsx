@@ -12,7 +12,15 @@ import AddFromTemplate from './add-from-template';
 import ModalWrapper from '../misc/modal_wrapper';
 import RevenueList, { Revenue, RevenueListProps } from './transactions';
 
-const Prompt: React.FC<RevenueListProps> = ({revenueList ,onEdit, onDelete}) => {
+type PromptProps ={
+  revenueList: Revenue[];
+  onEdit: (editedList: Revenue[]) => void;
+  editRevenues: (originallist: Revenue[]) => void;
+  onDelete: (deletedId: number) => void;
+  onClose: () => void;
+  handleAdd: (newItem: Revenue) => void;
+}
+const Prompt: React.FC<PromptProps> = ({revenueList ,onEdit, onDelete, onClose, handleAdd}) => {
   const [activeModal, setActiveModal] = useState<null | 'manual' | 'template'>(
     null
   );
@@ -20,7 +28,7 @@ const Prompt: React.FC<RevenueListProps> = ({revenueList ,onEdit, onDelete}) => 
 
     {
       amount: 1000,
-      date: new Date('2023-01-01'),
+      date: new Date('2023-01-4'),
       categories: [
         { key: 'Category1', value: 'Value1' },
         { key: 'Category2', value: 'Value2' },
@@ -30,7 +38,7 @@ const Prompt: React.FC<RevenueListProps> = ({revenueList ,onEdit, onDelete}) => 
     },
     {
       amount: 1500,
-      date: new Date('2023-02-15'),
+      date: new Date('2023-01-2'),
       categories: [
         { key: 'Category1', value: 'Value1' },
         { key: 'Category3', value: 'Value3' },
@@ -88,7 +96,7 @@ const Prompt: React.FC<RevenueListProps> = ({revenueList ,onEdit, onDelete}) => 
         onClose={handleCloseModal}
         title="Add Data Manually"
       >
-        <Add_Box />
+        <Add_Box transactionList = {revenueList} onSave = {onEdit}/>
       </ModalWrapper>
 
       <ModalWrapper
@@ -98,9 +106,10 @@ const Prompt: React.FC<RevenueListProps> = ({revenueList ,onEdit, onDelete}) => 
       >
         <AddFromTemplate
           revenueList={savedTemplates}
-          onEdit={setTemplates}
+          onEdit={updateTemplates}
           onDelete={handleDelete}
-          editRevenues={onEdit}
+          editRevenues = {onEdit}
+          onClose={handleCloseModal}
         />
       </ModalWrapper>
     </ChakraProvider>

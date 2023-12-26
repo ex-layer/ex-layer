@@ -189,13 +189,22 @@ const App = () => {
     const updatedList = revenues.filter((item) => item.payment_id !== deletedId);
     setRevenues(updatedList);
   };
+
+  const handleAdd = (newRevenue: Revenue) => {
+    // Add the new revenue object to the existing list
+    const updatedList = [...revenues, newRevenue];
+
+    // Update the state with the new list
+    setRevenues(updatedList);
+  };
+
   return (
     <ChakraProvider>
       <main>
        
         <Navbar />
         <DashboardTopper revenueList={revenues}/>
-        <TransactionBox revenueList={revenues} onEdit={updateRevenues} onDelete={handleDelete}/>
+        <TransactionBox revenueList={revenues} onEdit={updateRevenues} onDelete={handleDelete} handleAdd = {handleAdd}/>
       </main>
     </ChakraProvider>
   );

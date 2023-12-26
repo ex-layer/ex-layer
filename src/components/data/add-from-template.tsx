@@ -19,16 +19,17 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import { Revenue, RevenueListProps } from './transactions';
 import Edit_Box from './edit-data';
 
-type AddFromTemplateProps {
+type AddFromTemplateProps = {
   revenueList: Revenue[];
   onEdit: (editedList: Revenue[]) => void;
   onDelete: (deletedId: number) => void;
   editRevenues: (editedList: Revenue[]) => void;
+  onClose: () => void;
 }
 
 
 
-const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ revenueList, onEdit, onDelete, editRevenues}) => {
+const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ revenueList, onEdit, onDelete, editRevenues, onClose}) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState<Revenue | null>(null);
@@ -101,9 +102,17 @@ const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ revenueList, onEdit, 
     Object.entries(selectedRevenues).forEach(([index, qty]) => {
       const selectedIndex = parseInt(index, 10);
       const selectedRevenue = revenueList[selectedIndex];
-      const newItem = { ...selectedRevenue, quantity: qty };
-      setNewList((prevList) => [...prevList, newItem]);
+      
+      // Check if quantity is a valid number
+      if (!isNaN(qty) && qty > 0) {
+        const newItem = { ...selectedRevenue, quantity: qty };
+  
+        // Add newItem quantity number of times to prevList
+        editRevenues((prevList) => [...prevList, ...Array(qty).fill(newItem)]);
+      }
     });
+  
+    onClose();
 
     // Reset selections after adding to the new list
     setSelectedRevenues({});

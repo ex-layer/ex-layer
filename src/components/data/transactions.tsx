@@ -32,7 +32,7 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 export type Revenue = {
   categories: Array<{ key: string; value: string }>;
   amount: number;
-  date: Date;
+  date: Date | null;
   type: 'revenue' | 'expense'; // New field indicating revenue or expense
   payment_id: number;
   // add other properties as needed
@@ -43,6 +43,7 @@ export type RevenueListProps = {
   revenueList: Revenue[];
   onEdit: (editedList: Revenue[]) => void;
   onDelete: (deletedId: number) => void;
+  handleAdd: (newItem: Revenue) => void;
 };
 
 
@@ -107,7 +108,7 @@ const columns = [
     style: { fontSize: ['xs', 'sm', 'md'] },
   },
 ];
-const RevenueList: React.FC<RevenueListProps> = ({ revenueList, onEdit, onDelete }) => {
+const RevenueList: React.FC<RevenueListProps> = ({ revenueList, onEdit, onDelete, handleAdd }) => {
   const { colorMode } = useColorMode();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -263,7 +264,7 @@ const RevenueList: React.FC<RevenueListProps> = ({ revenueList, onEdit, onDelete
       </Table>
       
     </Box>
-    <Prompt revenueList={revenueList} onEdit = {onEdit} onDelete={onDelete}/>
+    <Prompt revenueList={revenueList} handleAdd = {handleAdd} onEdit = {onEdit} onDelete={onDelete} editRevenues = {onEdit} onClose={handleCloseEditModal}/>
     <Modal isOpen={isEditModalOpen} onClose={handleCloseEditModal} size="xl">
         <ModalOverlay />
         <ModalContent>

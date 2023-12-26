@@ -16,6 +16,7 @@
     "ag-grid-community": "^31.0.1",
     "ag-grid-react": "^31.0.1",
     "chart.js": "^4.4.1",
+    "encoding": "^0.1.13",
     "framer-motion": "^10.16.16",
     "handsontable": "^14.0.0",
     "next": "14.0.4",
