@@ -26,26 +26,26 @@ const Prompt: React.FC<PromptProps> = ({revenueList ,onEdit, onDelete, onClose, 
   );
   const [savedTemplates, setTemplates] = useState<Revenue[]>([
 
-    {
-      amount: 1000,
-      date: new Date('2023-01-4'),
-      categories: [
-        { key: 'Category1', value: 'Value1' },
-        { key: 'Category2', value: 'Value2' },
-      ],
-      type: 'revenue', // This one is revenue
-      payment_id:29
-    },
-    {
-      amount: 1500,
-      date: new Date('2023-01-2'),
-      categories: [
-        { key: 'Category1', value: 'Value1' },
-        { key: 'Category3', value: 'Value3' },
-      ],
-      type: 'revenue', // This one is revenue
-      payment_id:32
-    },
+    // {
+    //   amount: 1000,
+    //   date: new Date('2023-01-4'),
+    //   categories: [
+    //     { key: 'Category1', value: 'Value1' },
+    //     { key: 'Category2', value: 'Value2' },
+    //   ],
+    //   type: 'revenue', // This one is revenue
+    //   payment_id:29
+    // },
+    // {
+    //   amount: 1500,
+    //   date: new Date('2023-01-2'),
+    //   categories: [
+    //     { key: 'Category1', value: 'Value1' },
+    //     { key: 'Category3', value: 'Value3' },
+    //   ],
+    //   type: 'revenue', // This one is revenue
+    //   payment_id:32
+    // },
   ])
 
 
@@ -96,7 +96,7 @@ const Prompt: React.FC<PromptProps> = ({revenueList ,onEdit, onDelete, onClose, 
         onClose={handleCloseModal}
         title="Add Data Manually"
       >
-        <Add_Box transactionList = {revenueList} onSave = {onEdit}/>
+        <Add_Box transactionList = {revenueList} onSave = {onEdit} onClose = {handleCloseModal}/>
       </ModalWrapper>
 
       <ModalWrapper

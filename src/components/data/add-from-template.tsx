@@ -16,31 +16,33 @@ import {
   useColorMode,
 } from '@chakra-ui/react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
-import { Revenue, RevenueListProps } from './transactions';
+import { Revenue } from './transactions';
 import Edit_Box from './edit-data';
+import Add_Box from './add-data';
 
 type AddFromTemplateProps = {
   revenueList: Revenue[];
-  onEdit: (editedList: Revenue[]) => void;
+  onEdit: (editedData: Revenue[]) => void;
   onDelete: (deletedId: number) => void;
-  editRevenues: (editedList: Revenue[]) => void;
+  editRevenues: (editedData: Revenue[]) => void;
   onClose: () => void;
-}
+};
 
-
-
-const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ revenueList, onEdit, onDelete, editRevenues, onClose}) => {
+const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ revenueList, onEdit, onDelete, editRevenues, onClose }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState<Revenue | null>(null);
   const [selectedRevenues, setSelectedRevenues] = useState<Record<number, number>>({});
   const { colorMode } = useColorMode();
 
-  // Create a copy of the revenueList to avoid modifying the original
-
   const handleEditClick = (rowData: Revenue) => {
     setSelectedRowData(rowData);
     setIsEditModalOpen(true);
+  };
+
+  const handleAddClick = () => {
+    setIsAddModalOpen(true);
   };
 
   const handleDeleteClick = (rowData: Revenue) => {
@@ -53,6 +55,10 @@ const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ revenueList, onEdit, 
     setSelectedRowData(null);
   };
 
+  const handleCloseAddModal = () => {
+    setIsAddModalOpen(false);
+  };
+
   const handleCloseDeleteModal = () => {
     setIsDeleteModalOpen(false);
     setSelectedRowData(null);
@@ -60,20 +66,19 @@ const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ revenueList, onEdit, 
 
   const handleDeleteConfirm = () => {
     if (selectedRowData) {
-      onDelete(selectedRowData.payment_id);
+      onDelete(selectedRowData.payment_id || 0); // Add a fallback value if payment_id is nullable
       setIsDeleteModalOpen(false);
       setSelectedRowData(null);
     }
   };
 
   const handleEditConfirm = (editedData: Revenue) => {
-    onEdit(editedData);
+    onEdit([editedData]); // Pass an array to onEdit as per its type
     setIsEditModalOpen(false);
     setSelectedRowData(null);
   };
 
   useEffect(() => {
-    // Update selectedRowData based on the selected index
     if (Object.keys(selectedRevenues).length > 0) {
       const selectedIndex = parseInt(Object.keys(selectedRevenues)[0], 10);
       setSelectedRowData({ ...revenueList[selectedIndex], quantity: selectedRevenues[selectedIndex] });
@@ -84,9 +89,8 @@ const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ revenueList, onEdit, 
     setSelectedRevenues((prevSelected) => {
       const updatedSelected = { ...prevSelected };
       if (!updatedSelected[index]) {
-        updatedSelected[index] = updatedSelected[index] !== undefined ? updatedSelected[index] : 0; // Set default value to 0
+        updatedSelected[index] = updatedSelected[index] !== undefined ? updatedSelected[index] : 0;
       }
-
       return updatedSelected;
     });
   };
@@ -94,7 +98,7 @@ const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ revenueList, onEdit, 
   const handleQuantityChange = (index: number, newQuantity: number) => {
     setSelectedRevenues((prevSelected) => ({
       ...prevSelected,
-      [index]: newQuantity !== undefined ? newQuantity : 0, // Set default value to 0
+      [index]: newQuantity !== undefined ? newQuantity : 0,
     }));
   };
 
@@ -102,19 +106,14 @@ const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ revenueList, onEdit, 
     Object.entries(selectedRevenues).forEach(([index, qty]) => {
       const selectedIndex = parseInt(index, 10);
       const selectedRevenue = revenueList[selectedIndex];
-      
-      // Check if quantity is a valid number
+
       if (!isNaN(qty) && qty > 0) {
-        const newItem = { ...selectedRevenue, quantity: qty };
-  
-        // Add newItem quantity number of times to prevList
-        editRevenues((prevList) => [...prevList, ...Array(qty).fill(newItem)]);
+        const newItemArray = Array.from({ length: qty }, () => ({ ...selectedRevenue, quantity: qty }));
+        editRevenues((prevList) => [...prevList, ...newItemArray]);
       }
     });
-  
-    onClose();
 
-    // Reset selections after adding to the new list
+    onClose();
     setSelectedRevenues({});
     setSelectedRowData(null);
   };
@@ -168,10 +167,15 @@ const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ revenueList, onEdit, 
           </Flex>
         ))}
       </Stack>
-      <Flex align="center" mt={4}>
+      <Flex align="center" mt={4} justifyContent={'space-between'}>
         <Button onClick={handleAddToNewList} disabled={Object.values(selectedRevenues).every((qty) => qty <= 0)} size="md">
-          Add to New List
+          Add Data
         </Button>
+        <Button onClick={(handleAddClick)}>
+          Create Template
+        </Button>
+
+
       </Flex>
       <Modal isOpen={isEditModalOpen} onClose={handleCloseEditModal} size="xl">
         <ModalOverlay />
@@ -190,7 +194,21 @@ const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ revenueList, onEdit, 
           </ModalBody>
         </ModalContent>
       </Modal>
+      <Modal isOpen={isAddModalOpen} onClose={handleCloseAddModal} size="xl">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Add a Template</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+              <Add_Box
+                transactionList={revenueList} 
+                onSave={onEdit}
+                onClose={handleCloseAddModal}
+              />
 
+          </ModalBody>
+        </ModalContent>
+      </Modal>
       <Modal isOpen={isDeleteModalOpen} onClose={handleCloseDeleteModal} size="sm">
         <ModalOverlay />
         <ModalContent>

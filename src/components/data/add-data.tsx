@@ -19,9 +19,10 @@ import { Revenue } from './transactions';
 
 export type AddBoxProps = {
   onSave: (newDataArray: Revenue[]) => void;
-  transactionList: (oldList : Revenue[])  => void
+  transactionList: Revenue[];
+  onClose: () => void;
 };
-type addRevenue = {
+export type addRevenue = {
   categories: Array<{
       key: string;
       value: string;
@@ -32,7 +33,7 @@ type addRevenue = {
   payment_id: number;
   quantity: number
 }
-const Add_Box: React.FC<AddBoxProps> = ({ transactionList, onSave }) => {
+const Add_Box: React.FC<AddBoxProps> = ({ transactionList, onSave, onClose }) => {
   const [formData, setFormData] = useState<addRevenue>({
     type: 'revenue', // Default type is Revenue
     amount: 0,
@@ -60,12 +61,13 @@ const Add_Box: React.FC<AddBoxProps> = ({ transactionList, onSave }) => {
     const combinedData = [...transactionList, ...newDataArray];
   
     onSave(combinedData);
+    onClose()
   };
   const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
     setFormData((prevData: addRevenue) => ({
       ...prevData,
-      type: value as 'revenue' | 'expense',
+      type: value.toLowerCase() as 'revenue' | 'expense',
     }));
   };
 
@@ -132,13 +134,14 @@ const Add_Box: React.FC<AddBoxProps> = ({ transactionList, onSave }) => {
             <FormLabel>Type</FormLabel>
             <Select
               name="type"
-              value={formData.type}
+              value={formData.type.charAt(0).toUpperCase() + formData.type.slice(1)} // Capitalize the first letter
               onChange={(e) => handleTypeChange(e)}
               placeholder="Select Type"
             >
               <option value="Revenue">Revenue</option>
               <option value="Expense">Expense</option>
             </Select>
+
           </FormControl>
           <FormControl>
             <FormLabel>Amount</FormLabel>

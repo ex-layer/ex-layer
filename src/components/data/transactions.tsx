@@ -3,7 +3,7 @@
 import React from 'react';
 import { useState, useEffect} from 'react';
 import { Link, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Text, useColorModeValue } from '@chakra-ui/react';
-import { useTable, useSortBy } from 'react-table';
+import { useTable, useSortBy, Column } from 'react-table';
 import { FaLongArrowAltRight } from 'react-icons/fa';
 import { BiEdit, BiTrash } from 'react-icons/bi'; // Import icons for edit and delete
 import Edit_Box from './edit-data';
@@ -35,6 +35,7 @@ export type Revenue = {
   date: Date | null;
   type: 'revenue' | 'expense'; // New field indicating revenue or expense
   payment_id: number;
+  quantity?: number; // Add this line to make 'quantity' optional
   // add other properties as needed
 };
 
@@ -46,8 +47,15 @@ export type RevenueListProps = {
   handleAdd: (newItem: Revenue) => void;
 };
 
+type CustomColumnProps = {
 
-const columns = [
+    disableSortBy?: boolean;
+    width?: number;
+
+
+}
+
+const columns: (Column<Revenue> & CustomColumnProps)[] = [
   {
     Header: 'Categories',
     accessor: 'categories',
@@ -73,40 +81,39 @@ const columns = [
   {
     Header: 'Date',
     accessor: 'date',
-    Cell: ({ value }: { value: Date }) => 
+    Cell: ({ value }: { value: Date | null}) => 
     <Text fontSize={['xs', 'sm', 'md']}>
     {value?.toLocaleDateString()}
   
     </Text>
   },
   {
-    Header: 'Action',
-    accessor: 'action',
-    Cell: () => (
-      <Flex align="center" gap={0.2}>
-        <Tooltip label="Edit Notes" hasArrow placement="top">
-          <IconButton
-            colorScheme="teal"
-            size="xs"
-            aria-label="Edit"
-            // Implement the edit functionality here
-          />
-        </Tooltip>
-        <Tooltip label="Delete" hasArrow placement="top">
-          <IconButton
-            colorScheme="red"
-            size="xs"
-            aria-label="Delete"
-            // Implement the delete functionality here
-          />
-        </Tooltip>
-      </Flex>
-    ),
-    disableSortBy: true,
-    width: 30,
-    // Set responsive font size for mobile
-    style: { fontSize: ['xs', 'sm', 'md'] },
-  },
+  Header: 'Action',
+  accessor: 'payment_id',
+  Cell: () => (
+    <Flex align="center" gap={0.2}>
+      <Tooltip label="Edit Notes" hasArrow placement="top">
+        <IconButton
+          colorScheme="teal"
+          size="xs"
+          aria-label="Edit"
+          icon={<BiEdit />}
+        />
+      </Tooltip>
+      <Tooltip label="Delete" hasArrow placement="top">
+        <IconButton
+          colorScheme="red"
+          size="xs"
+          aria-label="Delete"
+          icon={<BiTrash />}
+        />
+      </Tooltip>
+    </Flex>
+  ),
+  disableSortBy: true,
+  width: 30,
+},
+
 ];
 const RevenueList: React.FC<RevenueListProps> = ({ revenueList, onEdit, onDelete, handleAdd }) => {
   const { colorMode } = useColorMode();
@@ -228,8 +235,8 @@ const RevenueList: React.FC<RevenueListProps> = ({ revenueList, onEdit, onDelete
               <Tr border="0px"  borderColor={colorMode === 'light' ? 'gray.300' : 'gray.600'}{ ...row.getRowProps()} key={row.id}>
                 {row.cells.map((cell) => (
                   <Td border="0px"  borderColor={colorMode === 'light' ? 'gray.300' : 'gray.600'} {...cell.getCellProps()} key={cell.column.id}>
-                    {cell.column.id === 'action' ? (
-                      <Flex align="center" justify="space-around">
+                    {cell.column.id === 'payment_id' ? (
+                      <Flex align="center" gap={1}>
                         {/* Edit Button */}
                         <Tooltip label=""hasArrow placement="top">
                         <IconButton
