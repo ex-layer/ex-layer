@@ -1,7 +1,7 @@
 // FullCode.tsx
 'use client'
 import React from 'react';
-import { useState} from 'react';
+import { useState, useEffect} from 'react';
 import { Link, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTable, useSortBy } from 'react-table';
 import { FaLongArrowAltRight } from 'react-icons/fa';
@@ -42,6 +42,7 @@ export type Revenue = {
 export type RevenueListProps = {
   revenueList: Revenue[];
   onEdit: (editedList: Revenue[]) => void;
+  onDelete: (deletedId: number) => void;
 };
 
 
@@ -61,13 +62,12 @@ const columns = [
   {
     Header: 'Amount',
     accessor: 'amount',
-    Cell: ({ value }: { value: number }) => (
-      <Text fontSize={['xs', 'sm', 'md']} style={{ color: value < 0 ? 'red' : 'green' }}>
-        {value < 0 ? '- $' : '+ $'}
+    Cell: ({ value, row }: { value: number; row: { original: Revenue } }) => (
+      <Text fontSize={['xs', 'sm', 'md']} style={{ color: row.original.type === 'revenue' ? 'green' : 'red' }}>
+        {row.original.type === 'revenue' ? '+ $' : '- $'}
         {Math.abs(value)}
       </Text>
     ),
-
   },
   {
     Header: 'Date',
@@ -107,64 +107,10 @@ const columns = [
     style: { fontSize: ['xs', 'sm', 'md'] },
   },
 ];
-const RevenueList: React.FC<RevenueListProps> = ({ revenueList , onEdit}) => {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
+const RevenueList: React.FC<RevenueListProps> = ({ revenueList, onEdit, onDelete }) => {
   const { colorMode } = useColorMode();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState<Revenue | null>(null);
 
   const handleEditClick = (rowData: Revenue) => {
@@ -172,9 +118,27 @@ const RevenueList: React.FC<RevenueListProps> = ({ revenueList , onEdit}) => {
     setIsEditModalOpen(true);
   };
 
+  const handleDeleteClick = (rowData: Revenue) => {
+    setSelectedRowData(rowData);
+    setIsDeleteModalOpen(true);
+  };
+
   const handleCloseEditModal = () => {
     setIsEditModalOpen(false);
     setSelectedRowData(null);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setSelectedRowData(null);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (selectedRowData) {
+      onDelete(selectedRowData.payment_id);
+      setIsDeleteModalOpen(false);
+      setSelectedRowData(null);
+    }
   };
 
   const {
@@ -266,7 +230,7 @@ const RevenueList: React.FC<RevenueListProps> = ({ revenueList , onEdit}) => {
                     {cell.column.id === 'action' ? (
                       <Flex align="center" justify="space-around">
                         {/* Edit Button */}
-                        <Tooltip label="Edit Notes" hasArrow placement="top">
+                        <Tooltip label=""hasArrow placement="top">
                         <IconButton
                               colorScheme="teal"
                               size="xs"
@@ -276,13 +240,13 @@ const RevenueList: React.FC<RevenueListProps> = ({ revenueList , onEdit}) => {
                             />
                         </Tooltip>
                         {/* Delete Button */}
-                        <Tooltip label="Delete" hasArrow placement="top">
+                        <Tooltip label="" hasArrow placement="top">
                           <IconButton
                             colorScheme="red"
                             size="xs"
                             aria-label="Delete"
                             icon={<BiTrash />}
-                            // Implement the delete functionality here
+                            onClick={() => handleDeleteClick(row.original)}
                           />
                         </Tooltip>
                       </Flex>
@@ -299,7 +263,7 @@ const RevenueList: React.FC<RevenueListProps> = ({ revenueList , onEdit}) => {
       </Table>
       
     </Box>
-    <Prompt/>
+    <Prompt revenueList={revenueList} onEdit = {onEdit} onDelete={onDelete}/>
     <Modal isOpen={isEditModalOpen} onClose={handleCloseEditModal} size="xl">
         <ModalOverlay />
         <ModalContent>
@@ -310,6 +274,49 @@ const RevenueList: React.FC<RevenueListProps> = ({ revenueList , onEdit}) => {
           </ModalBody>
         </ModalContent>
       </Modal>
+
+      <Modal isOpen={isDeleteModalOpen} onClose={handleCloseDeleteModal} size="sm">
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader color="red.500">Delete Confirmation</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Text fontSize="lg" mb={4}>
+                Are you sure you want to delete the following record?
+              </Text>
+              {selectedRowData && (
+
+                <Box>
+                   <Text><strong>Transaction Type: </strong> {selectedRowData.type}</Text>
+                    <Text mt={2}>
+                    <strong>Categories:</strong>
+                  </Text>
+                  <Box ml={4}>
+                    {selectedRowData.categories.map((category, index) => (
+                      <Box key={index} mt={1}>
+                        <Text>
+                          <strong>{category.key}</strong> {category.value}              
+                        </Text>
+
+                      </Box>
+                    ))}
+                  </Box>
+                  <br></br>
+                  <Text>
+                    <strong>Amount:</strong> ${selectedRowData.amount}
+                  </Text>
+                  <Text>
+                    <strong>Date:</strong> {selectedRowData.date?.toLocaleDateString()}
+                  </Text>
+                  {/* Include other fields as needed */}
+                </Box>
+              )}
+              <Button colorScheme="red" onClick={handleDeleteConfirm} mt={4}>
+                Confirm Delete
+              </Button>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
 
     </Box>
   </main>

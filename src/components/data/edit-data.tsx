@@ -71,11 +71,13 @@ const Edit_Box: React.FC<EditBoxProps> = ({ transaction, revenueList, onSave , o
 
   const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
+    const newType: 'revenue' | 'expense' = value === 'Revenue' ? 'revenue' : 'expense';
     setFormData((prevData: Revenue) => ({
       ...prevData,
-      type: value as 'revenue' | 'expense',
+      type: newType,
     }));
   };
+  
 
  
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

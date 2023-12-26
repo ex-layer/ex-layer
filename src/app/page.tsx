@@ -29,7 +29,7 @@ const App = () => {
       payment_id:2
     },
     {
-      amount: -800, // Make the amount negative for expenses
+      amount: 800,
       date: new Date('2023-03-10'),
       categories: [
         { key: 'Category2', value: 'Value2' },
@@ -49,7 +49,7 @@ const App = () => {
       payment_id:4
     },
     {
-      amount: -800, // Make the amount negative for expenses
+      amount: 800, 
       date: new Date('2023-03-10'),
       categories: [
         { key: 'Category2', value: 'Value2' },
@@ -69,7 +69,7 @@ const App = () => {
       payment_id:6
     },
     {
-      amount: -800, // Make the amount negative for expenses
+      amount: 800, 
       date: new Date('2023-03-10'),
       categories: [
         { key: 'Category2', value: 'Value2' },
@@ -89,7 +89,7 @@ const App = () => {
       payment_id:8
     },
     {
-      amount: -800, // Make the amount negative for expenses
+      amount: 800, 
       date: new Date('2023-03-10'),
       categories: [
         { key: 'Category2', value: 'Value2' },
@@ -109,7 +109,7 @@ const App = () => {
       payment_id:10
     },
     {
-      amount: -800, // Make the amount negative for expenses
+      amount: 800, 
       date: new Date('2023-03-10'),
       categories: [
         { key: 'Category2', value: 'Value2' },
@@ -129,7 +129,7 @@ const App = () => {
       payment_id:12
     },
     {
-      amount: -800, // Make the amount negative for expenses
+      amount: 800,
       date: new Date('2023-03-10'),
       categories: [
         { key: 'Category2', value: 'Value2' },
@@ -149,7 +149,7 @@ const App = () => {
       payment_id:14
     },
     {
-      amount: -800, // Make the amount negative for expenses
+      amount: 800, 
       date: new Date('2023-03-10'),
       categories: [
         { key: 'Category2', value: 'Value2' },
@@ -169,7 +169,7 @@ const App = () => {
       payment_id:16
     },
     {
-      amount: -800, // Make the amount negative for expenses
+      amount: 800, 
       date: new Date('2023-03-10'),
       categories: [
         { key: 'Category2', value: 'Value2' },
@@ -184,14 +184,18 @@ const App = () => {
   const updateRevenues = (newRevenues: Revenue[]) => { // Define a function to update this mockRevenue list
     setRevenues(newRevenues);
   };
-  
+  const handleDelete = (deletedId: number) => {
+    // Filter out the item with the specified payment_id
+    const updatedList = revenues.filter((item) => item.payment_id !== deletedId);
+    setRevenues(updatedList);
+  };
   return (
     <ChakraProvider>
       <main>
        
         <Navbar />
         <DashboardTopper revenueList={revenues}/>
-        <TransactionBox revenueList={revenues} onEdit={updateRevenues}/>
+        <TransactionBox revenueList={revenues} onEdit={updateRevenues} onDelete={handleDelete}/>
       </main>
     </ChakraProvider>
   );

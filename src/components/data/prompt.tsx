@@ -10,15 +10,14 @@ import {
 import Add_Box from '@/components/data/add-data';
 import AddFromTemplate from './add-from-template';
 import ModalWrapper from '../misc/modal_wrapper';
-import { Revenue } from './transactions';
+import RevenueList, { Revenue, RevenueListProps } from './transactions';
 
-const Prompt: React.FC = () => {
+const Prompt: React.FC<RevenueListProps> = ({revenueList ,onEdit, onDelete}) => {
   const [activeModal, setActiveModal] = useState<null | 'manual' | 'template'>(
     null
   );
-  const [newList, setNewList] = useState<Revenue[]>([]);
+  const [savedTemplates, setTemplates] = useState<Revenue[]>([
 
-  const mockRevenues: Revenue[] = [
     {
       amount: 1000,
       date: new Date('2023-01-01'),
@@ -27,7 +26,7 @@ const Prompt: React.FC = () => {
         { key: 'Category2', value: 'Value2' },
       ],
       type: 'revenue', // This one is revenue
-      payment_id:3
+      payment_id:29
     },
     {
       amount: 1500,
@@ -37,9 +36,20 @@ const Prompt: React.FC = () => {
         { key: 'Category3', value: 'Value3' },
       ],
       type: 'revenue', // This one is revenue
-      payment_id:7
+      payment_id:32
     },
-  ]
+  ])
+
+
+  const updateTemplates = (newRevenues: Revenue[]) => { // Define a function to update this template list
+    setTemplates(newRevenues);
+  };
+
+  const handleDelete = (deletedId: number) => {
+    // Filter out the item with the specified payment_id
+    const updatedList = savedTemplates.filter((item) => item.payment_id !== deletedId);
+    setTemplates(updatedList);
+  };
 
   const handleModalOpen = (type: 'manual' | 'template') => {
     setActiveModal(type);
@@ -87,9 +97,10 @@ const Prompt: React.FC = () => {
         title="Add Data From Template"
       >
         <AddFromTemplate
-          revenueList={mockRevenues}
-          newList={newList}
-          setNewList={setNewList}
+          revenueList={savedTemplates}
+          onEdit={setTemplates}
+          onDelete={handleDelete}
+          editRevenues={onEdit}
         />
       </ModalWrapper>
     </ChakraProvider>

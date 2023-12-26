@@ -31,22 +31,25 @@ const DashboardStats = (props : DashboardStatsProps) => {
   .sort(([, valueA]: [string, number], [, valueB]: [string, number]) => valueB - valueA)
   .map(([category]: [string, number]) => category);
 
-  // Calculate change in revenue and expenses
   const calculateChange = () => {
     let totalRevenue = 0;
     let totalExpenses = 0;
-
+  
     revenueList.forEach((revenue) => {
-      totalRevenue += revenue.amount || 0;
-      // Assuming that expenses are represented as negative values in the amount property
-      totalExpenses += Math.min(revenue.amount || 0, 0);
+      const amount = Math.abs(revenue.amount || 0); // Make the amount positive
+  
+      if (revenue.type === 'revenue') {
+        totalRevenue += amount;
+      } else if (revenue.type === 'expense') {
+        totalExpenses += amount;
+      }
     });
-
+  
     return { totalRevenue, totalExpenses };
   };
-
+  
   const { totalRevenue, totalExpenses } = calculateChange();
-
+  
   return (
     <Box
       width={{ base: '100%', md: '48%' }}
