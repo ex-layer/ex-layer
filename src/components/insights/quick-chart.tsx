@@ -41,7 +41,6 @@ const ProfitChart = (props : ProfitChartProps) => {
           },
         },
         labels: {
-          show: !(window.innerWidth <= 480),
           style: {
             colors: colorMode === 'light' ? 'black' : 'white',
             fontSize: '14px',
@@ -57,7 +56,6 @@ const ProfitChart = (props : ProfitChartProps) => {
           },
         },
         labels: {
-          show:  !(window.innerWidth <= 480),
           style: {
             colors: colorMode === 'light' ? 'black' : 'white',
             fontSize: '14px',
