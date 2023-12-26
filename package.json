@@ -15,6 +15,7 @@
     "@handsontable/react": "^14.0.0",
     "ag-grid-community": "^31.0.1",
     "ag-grid-react": "^31.0.1",
+    "apexcharts": "^3.45.1",
     "chart.js": "^4.4.1",
     "encoding": "^0.1.13",
     "framer-motion": "^10.16.16",

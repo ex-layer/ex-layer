@@ -4,7 +4,9 @@
 
 import React from 'react';
 import {useColorMode} from '@chakra-ui/react';
-import Chart from 'react-apexcharts';
+import dynamic from "next/dynamic";
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+
 import { Revenue } from '../data/transactions';
 
 interface ProfitChartProps {
@@ -96,7 +98,7 @@ const ProfitChart = (props : ProfitChartProps) => {
 
     return (
       <main>
-            <Chart options={chartOptions} series={series} type="line" height={450} />
+            <Chart options={chartOptions} series={series} type="line" height={450} width={"100%"} />
       </main>
     
     );

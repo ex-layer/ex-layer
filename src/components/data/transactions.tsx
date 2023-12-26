@@ -211,8 +211,8 @@ const RevenueList: React.FC<RevenueListProps> = React.memo(({ revenueList, onEdi
 
       <Table variant="simple" size={['xs', 'sm', 'md']} {...getTableProps()}>
         <Thead>
-          {headerGroups.map((headerGroup) => (
-            <Tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
+          {headerGroups.map((headerGroup, index) => (
+            <Tr {...headerGroup.getHeaderGroupProps()} key={index}>
               {headerGroup.headers.map((column) => (
                 <Th
                 p={0.5}
