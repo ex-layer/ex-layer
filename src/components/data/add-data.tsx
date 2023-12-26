@@ -153,7 +153,8 @@ const Add_Box: React.FC<AddBoxProps> = ({ transactionList, onSave, onClose }) =>
           <FormControl>
             <FormLabel>Amount</FormLabel>
             <InputGroup>
-            <InputLeftAddon  color={dollarSignColor}  children={<FaDollarSign />} />
+            <InputLeftAddon  color={dollarSignColor} />
+            <FaDollarSign />
               <Input
                _hover={{ borderColor: hoverBorderColor }}
                 type="number"

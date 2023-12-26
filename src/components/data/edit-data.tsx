@@ -157,7 +157,8 @@ const Edit_Box: React.FC<EditBoxProps> = ({ transaction, revenueList, onSave , o
           <FormControl>
             <FormLabel>Amount</FormLabel>
             <InputGroup>
-              <InputLeftAddon  color={dollarSignColor}  children={<FaDollarSign/>} />
+              <InputLeftAddon  color={dollarSignColor} />
+              <FaDollarSign/>
               <Input
                 type="number"
                 name="amount"

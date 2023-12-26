@@ -117,6 +117,7 @@ const columns: (Column<Revenue> & CustomColumnProps)[] = [
 
 ];
 const RevenueList: React.FC<RevenueListProps> = React.memo(({ revenueList, onEdit, onDelete, handleAdd }) => {
+  RevenueList.displayName = 'RevenueList';
   const { colorMode } = useColorMode();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
