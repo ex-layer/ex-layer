@@ -21,14 +21,15 @@ import Edit_Box from './edit-data';
 import Add_Box from './add-data';
 
 type AddFromTemplateProps = {
-  revenueList: Revenue[];
+  templateList: Revenue[];
+  originalTransactions: Revenue[];
   onEdit: (editedData: Revenue[]) => void;
   onDelete: (deletedId: number) => void;
   editRevenues: (editedData: Revenue[]) => void;
   onClose: () => void;
 };
 
-const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ revenueList, onEdit, onDelete, editRevenues, onClose }) => {
+const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ templateList, originalTransactions, onEdit, onDelete, editRevenues, onClose }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -81,9 +82,9 @@ const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ revenueList, onEdit, 
   useEffect(() => {
     if (Object.keys(selectedRevenues).length > 0) {
       const selectedIndex = parseInt(Object.keys(selectedRevenues)[0], 10);
-      setSelectedRowData({ ...revenueList[selectedIndex], quantity: selectedRevenues[selectedIndex] });
+      setSelectedRowData({ ...templateList[selectedIndex], quantity: selectedRevenues[selectedIndex] });
     }
-  }, [selectedRevenues, revenueList]);
+  }, [selectedRevenues, templateList]);
 
   const handleToggleSelection = (index: number) => {
     setSelectedRevenues((prevSelected) => {
@@ -103,20 +104,23 @@ const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ revenueList, onEdit, 
   };
 
   const handleAddToNewList = () => {
+    const transactionCopy = [...originalTransactions]; // Create a shallow copy of originalTransactions
+  
     Object.entries(selectedRevenues).forEach(([index, qty]) => {
       const selectedIndex = parseInt(index, 10);
-      const selectedRevenue = revenueList[selectedIndex];
-
-      if (!isNaN(qty) && qty > 0) {
-        const newItemArray = Array.from({ length: qty }, () => ({ ...selectedRevenue, quantity: qty }));
-        editRevenues((prevList) => [...prevList, ...newItemArray]);
+      const selectedRevenue = templateList[selectedIndex];
+  
+      for (let i = 0; i < qty; i++) {
+        transactionCopy.push({ ...selectedRevenue }); // Use spread operator for immutability
       }
     });
-
+  
+    editRevenues(transactionCopy);
     onClose();
     setSelectedRevenues({});
     setSelectedRowData(null);
   };
+  
 
   return (
     <Box p={6} borderWidth="1px" borderRadius="lg">
@@ -124,7 +128,7 @@ const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ revenueList, onEdit, 
         Available List
       </Text>
       <Stack spacing={4}>
-        {revenueList.map((revenue, index) => (
+        {templateList.map((revenue, index) => (
           <Flex
             key={index}
             alignItems="center"
@@ -135,7 +139,7 @@ const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ revenueList, onEdit, 
           >
             <Box flex="1">
               {revenue.categories.map((category) => `${category.key}: ${category.value}, `)}
-              Amount: {revenue.amount}, Date: {revenue.date.toLocaleDateString()}, Type: {revenue.type}
+              Amount: {revenue.amount}, Date: {revenue.date ? revenue.date.toLocaleDateString(): ""}, Type: {revenue.type}
             </Box>
             <Flex alignItems="center">
               <Input
@@ -168,7 +172,7 @@ const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ revenueList, onEdit, 
         ))}
       </Stack>
       <Flex align="center" mt={4} justifyContent={'space-between'}>
-        <Button onClick={handleAddToNewList} disabled={Object.values(selectedRevenues).every((qty) => qty <= 0)} size="md">
+        <Button onClick={handleAddToNewList} size="md">
           Add Data
         </Button>
         <Button onClick={(handleAddClick)}>
@@ -186,8 +190,8 @@ const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ revenueList, onEdit, 
             {selectedRowData && (
               <Edit_Box
                 transaction={selectedRowData}
-                revenueList={revenueList} 
-                onSave={handleEditConfirm}
+                revenueList={templateList} 
+                onSave={onEdit}
                 onClose={handleCloseEditModal}
               />
             )}
@@ -201,7 +205,7 @@ const AddFromTemplate: React.FC<AddFromTemplateProps> = ({ revenueList, onEdit, 
           <ModalCloseButton />
           <ModalBody>
               <Add_Box
-                transactionList={revenueList} 
+                transactionList={templateList} 
                 onSave={onEdit}
                 onClose={handleCloseAddModal}
               />

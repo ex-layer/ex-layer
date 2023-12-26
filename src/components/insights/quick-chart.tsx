@@ -96,7 +96,7 @@ const ProfitChart = (props : ProfitChartProps) => {
 
     return (
       <main>
-            <Chart options={chartOptions} series={series} type="line" height={350} />
+            <Chart options={chartOptions} series={series} type="line" height={450} />
       </main>
     
     );

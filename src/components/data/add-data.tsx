@@ -11,6 +11,7 @@ import {
   IconButton,
   InputGroup,
   InputLeftAddon,
+  useColorMode,
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -34,6 +35,11 @@ export type addRevenue = {
   quantity: number
 }
 const Add_Box: React.FC<AddBoxProps> = ({ transactionList, onSave, onClose }) => {
+  const { colorMode } = useColorMode();
+  const dollarSignColor = colorMode === 'light' ? 'black' : 'gray'
+
+  const hoverBorderColor = colorMode === 'light' ? 'gray.600' : 'gray.400';
+
   const [formData, setFormData] = useState<addRevenue>({
     type: 'revenue', // Default type is Revenue
     amount: 0,
@@ -133,6 +139,7 @@ const Add_Box: React.FC<AddBoxProps> = ({ transactionList, onSave, onClose }) =>
           <FormControl>
             <FormLabel>Type</FormLabel>
             <Select
+              _hover={{ borderColor: hoverBorderColor }}
               name="type"
               value={formData.type.charAt(0).toUpperCase() + formData.type.slice(1)} // Capitalize the first letter
               onChange={(e) => handleTypeChange(e)}
@@ -146,8 +153,9 @@ const Add_Box: React.FC<AddBoxProps> = ({ transactionList, onSave, onClose }) =>
           <FormControl>
             <FormLabel>Amount</FormLabel>
             <InputGroup>
-              <InputLeftAddon children={<FaDollarSign />} />
+            <InputLeftAddon  color={dollarSignColor}  children={<FaDollarSign />} />
               <Input
+               _hover={{ borderColor: hoverBorderColor }}
                 type="number"
                 name="amount"
                 value={formData.amount}
@@ -159,10 +167,11 @@ const Add_Box: React.FC<AddBoxProps> = ({ transactionList, onSave, onClose }) =>
           <FormControl>
             <FormLabel>Date</FormLabel>
             <DatePicker
+            
               selected={formData.date}
               onChange={(date) => handleDateChange(date)}
               placeholderText="Select date"
-              customInput={<Input />}
+              customInput={<Input _hover={{ borderColor: hoverBorderColor }}/>}
               dateFormat="MMMM d, yyyy"
               popperPlacement="auto" // Position the datepicker to pop out to the right
             />
@@ -170,6 +179,7 @@ const Add_Box: React.FC<AddBoxProps> = ({ transactionList, onSave, onClose }) =>
           <FormControl>
             <FormLabel>Quantity</FormLabel>
             <Input
+            _hover={{ borderColor: hoverBorderColor }}
               type="number"
               name="quantity"
               value={formData.quantity}
@@ -183,6 +193,7 @@ const Add_Box: React.FC<AddBoxProps> = ({ transactionList, onSave, onClose }) =>
             {formData.categories.map((category: any, index: number) => (
               <Stack key={index} direction="row" spacing={4}>
                 <Input
+                _hover={{ borderColor: hoverBorderColor }}
                   type="text"
                   name={`Category-${index}`}
                   className="mb-3"
@@ -192,6 +203,7 @@ const Add_Box: React.FC<AddBoxProps> = ({ transactionList, onSave, onClose }) =>
                   size="sm"
                 />
                 <Input
+                _hover={{ borderColor: hoverBorderColor }}
                   type="text"
                   name={`value-${index}`}
                   value={category.value}
@@ -200,6 +212,7 @@ const Add_Box: React.FC<AddBoxProps> = ({ transactionList, onSave, onClose }) =>
                   size="sm"
                 />
                 <IconButton
+
                   aria-label={`Remove Category ${index}`}
                   icon={<FaMinus />}
                   onClick={() => handleRemoveCategory(index)}
@@ -209,6 +222,7 @@ const Add_Box: React.FC<AddBoxProps> = ({ transactionList, onSave, onClose }) =>
             ))}
 
             <Button
+            
               variant="link"
               colorScheme="teal"
               size="sm"

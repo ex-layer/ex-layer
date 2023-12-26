@@ -1,8 +1,8 @@
 // components/Navbar.tsx
-'use client'
+import Image from "next/image";
 import { Box, Flex, Button, useColorMode, Icon, Switch } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { FiSun, FiMoon } from "react-icons/fi"; // Import icons for day and night
+import { FiSun, FiMoon } from "react-icons/fi";
 
 const Navbar: React.FC = () => {
   const router = useRouter();
@@ -14,20 +14,24 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <Box bg="green.400" p={3}>
+    <Box bg="green.400" p={{ base: 2, md: 3 }} overflowX="auto" maxWidth="100%">
       <Flex align="center" justify="space-between">
-        <Button
-          as="span"
-          variant="link"
-          color="white"
-          fontWeight="bold"
-          fontSize="lg"
-          _hover={{ opacity: 0.8 }}
-          onClick={goToExLayerDemo}
-        >
-          ex-layer demo
-        </Button>
-        <div style={{ color: "white" }}>
+        <Flex align="center">
+          <Image src="/logo.png" alt="Logo" width={50} height={50} />
+          <Button
+            as="span"
+            variant="link"
+            color="white"
+            fontWeight="bold"
+            fontSize={{ base: "sm", md: "lg" }}
+            _hover={{ opacity: 0.8 }}
+            onClick={goToExLayerDemo}
+            ml={2}
+          >
+            ex-layer demo
+          </Button>
+        </Flex>
+        <Box style={{ color: "white", textAlign: "center" }}>
           Go to the full{' '}
           <Button
             as="span"
@@ -38,17 +42,13 @@ const Navbar: React.FC = () => {
           >
             ex-layer {arrow}
           </Button>
-        </div>
-        {/* Use custom Switch component for more customization */}
-     
+        </Box>
         <CustomSwitch isChecked={colorMode === "dark"} onChange={toggleColorMode} />
       </Flex>
     </Box>
   );
 };
 
-// Custom Switch component with icon inside
-// Custom Switch component with icon inside
 const CustomSwitch: React.FC<{ isChecked: boolean; onChange: () => void }> = ({
   isChecked,
   onChange,
@@ -62,7 +62,7 @@ const CustomSwitch: React.FC<{ isChecked: boolean; onChange: () => void }> = ({
         sx={{
           "& .chakra-switch__track": {
             bg: isChecked ? "teal.500" : "gray.300",
-            transition: "background 0.5s ease-in-out", // Add the transition property here
+            transition: "background 0.5s ease-in-out",
           },
           "& .chakra-switch__label": {
             color: isChecked ? "white" : "gray.700",
@@ -70,7 +70,7 @@ const CustomSwitch: React.FC<{ isChecked: boolean; onChange: () => void }> = ({
           "& .chakra-switch__thumb": {
             bg: isChecked ? "teal.500" : "white",
             boxShadow: isChecked ? "0 0 10px rgba(0, 0, 0, 0.5)" : "none",
-            transition: "background 0.5s ease-in-out", // Add the transition property here
+            transition: "background 0.5s ease-in-out",
           },
         }}
       />
@@ -79,5 +79,4 @@ const CustomSwitch: React.FC<{ isChecked: boolean; onChange: () => void }> = ({
   );
 };
 
- 
 export default Navbar;

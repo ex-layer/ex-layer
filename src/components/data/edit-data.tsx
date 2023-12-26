@@ -11,6 +11,7 @@ import {
   IconButton,
   InputGroup,
   InputLeftAddon,
+  useColorMode,
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -26,6 +27,9 @@ export type EditBoxProps = {
 
 
 const Edit_Box: React.FC<EditBoxProps> = ({ transaction, revenueList, onSave , onClose}) => {
+  const { colorMode } = useColorMode();
+  const dollarSignColor = colorMode === 'light' ? 'black' : 'gray'
+  
   const [formData, setFormData] = useState<Revenue>(transaction || {
     type: 'revenue',
     amount: 0,
@@ -153,7 +157,7 @@ const Edit_Box: React.FC<EditBoxProps> = ({ transaction, revenueList, onSave , o
           <FormControl>
             <FormLabel>Amount</FormLabel>
             <InputGroup>
-              <InputLeftAddon children={<FaDollarSign />} />
+              <InputLeftAddon  color={dollarSignColor}  children={<FaDollarSign/>} />
               <Input
                 type="number"
                 name="amount"

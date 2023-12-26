@@ -6,6 +6,7 @@ import {
   ChakraProvider,
   extendTheme,
   CSSReset,
+  useColorMode,
 } from '@chakra-ui/react';
 import Add_Box from '@/components/data/add-data';
 import AddFromTemplate from './add-from-template';
@@ -21,6 +22,8 @@ type PromptProps ={
   handleAdd: (newItem: Revenue) => void;
 }
 const Prompt: React.FC<PromptProps> = ({revenueList ,onEdit, onDelete, onClose, handleAdd}) => {
+
+  
   const [activeModal, setActiveModal] = useState<null | 'manual' | 'template'>(
     null
   );
@@ -74,6 +77,7 @@ const Prompt: React.FC<PromptProps> = ({revenueList ,onEdit, onDelete, onClose, 
         <Stack mt={2} spacing={4} direction="row">
           <Button
             fontSize={['xs', 'sm', 'md']}
+            textColor="white"
             colorScheme="green"
             size="md"
             onClick={() => handleModalOpen('manual')}
@@ -81,6 +85,7 @@ const Prompt: React.FC<PromptProps> = ({revenueList ,onEdit, onDelete, onClose, 
             + Add Data Manually
           </Button>
           <Button
+            textColor="white"
             fontSize={['xs', 'sm', 'md']}
             colorScheme="green"
             size="md"
@@ -105,7 +110,8 @@ const Prompt: React.FC<PromptProps> = ({revenueList ,onEdit, onDelete, onClose, 
         title="Add Data From Template"
       >
         <AddFromTemplate
-          revenueList={savedTemplates}
+          templateList={savedTemplates}
+          originalTransactions = {revenueList}
           onEdit={updateTemplates}
           onDelete={handleDelete}
           editRevenues = {onEdit}

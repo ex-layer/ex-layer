@@ -6,8 +6,8 @@ import { Link, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, Mo
 import { useTable, useSortBy, Column } from 'react-table';
 import { FaLongArrowAltRight } from 'react-icons/fa';
 import { BiEdit, BiTrash } from 'react-icons/bi'; // Import icons for edit and delete
-import Edit_Box from './edit-data';
-import Prompt from './prompt';
+const Prompt = React.lazy(() => import('./prompt'));
+const Edit_Box = React.lazy(() => import('./edit-data'));
 import {
 
   Box,
@@ -25,6 +25,7 @@ import {
   useColorMode,
 } from '@chakra-ui/react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+
 
 
 
@@ -115,7 +116,7 @@ const columns: (Column<Revenue> & CustomColumnProps)[] = [
 },
 
 ];
-const RevenueList: React.FC<RevenueListProps> = ({ revenueList, onEdit, onDelete, handleAdd }) => {
+const RevenueList: React.FC<RevenueListProps> = React.memo(({ revenueList, onEdit, onDelete, handleAdd }) => {
   const { colorMode } = useColorMode();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -155,7 +156,8 @@ const RevenueList: React.FC<RevenueListProps> = ({ revenueList, onEdit, onDelete
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({ columns, data: revenueList }, useSortBy);
+  } = useTable(React.useMemo(() => ({ columns, data: revenueList }), [columns, revenueList]), useSortBy);
+  
   const cardBackgroundColor = useColorModeValue('white', 'gray.800');
   const cardBorderColor = useColorModeValue('gray.200', 'gray.600');
 
@@ -171,7 +173,6 @@ const RevenueList: React.FC<RevenueListProps> = ({ revenueList, onEdit, onDelete
          m={4}
          >
          
-
         <Box>
         <Flex align="center">
           <Text p={4} fontSize="3xl" fontWeight="bold">
@@ -316,7 +317,6 @@ const RevenueList: React.FC<RevenueListProps> = ({ revenueList, onEdit, onDelete
                   <Text>
                     <strong>Date:</strong> {selectedRowData.date?.toLocaleDateString()}
                   </Text>
-                  {/* Include other fields as needed */}
                 </Box>
               )}
               <Button colorScheme="red" onClick={handleDeleteConfirm} mt={4}>
@@ -329,6 +329,6 @@ const RevenueList: React.FC<RevenueListProps> = ({ revenueList, onEdit, onDelete
     </Box>
   </main>
   );
-};
+});
 
 export default RevenueList;
