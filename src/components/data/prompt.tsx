@@ -76,19 +76,19 @@ const Prompt: React.FC<PromptProps> = ({revenueList ,onEdit, onDelete, onClose, 
       <Box m="5" textAlign="center">
         <Stack mt={2} spacing={4} direction="row">
           <Button
-            fontSize={['xs', 'sm', 'md']}
+            fontSize={{ base: 'xs', sm: 'xs', md: 'sm' }}
             textColor="white"
             colorScheme="green"
-            size="md"
+            size='md'
             onClick={() => handleModalOpen('manual')}
           >
             + Add Data Manually
           </Button>
           <Button
             textColor="white"
-            fontSize={['xs', 'sm', 'md']}
+            fontSize={{ base: 'xs', sm: 'xs', md: 'sm' }}
             colorScheme="green"
-            size="md"
+            size='md'
             onClick={() => handleModalOpen('template')}
           >
             + Add Data From Template
