@@ -200,7 +200,7 @@ const Add_Box: React.FC<AddBoxProps> = ({ transactionList, onSave, onClose }) =>
                   value={category.key}
                   onChange={(e) => handleCategoryChange(index, 'key', e.target.value)}
                   placeholder="Category"
-                  size="sm"
+                  size="md"
                 />
                 <Input
                 _hover={{ borderColor: hoverBorderColor }}
@@ -209,14 +209,14 @@ const Add_Box: React.FC<AddBoxProps> = ({ transactionList, onSave, onClose }) =>
                   value={category.value}
                   onChange={(e) => handleCategoryChange(index, 'value', e.target.value)}
                   placeholder="Value"
-                  size="sm"
+                  size="md"
                 />
                 <IconButton
 
                   aria-label={`Remove Category ${index}`}
                   icon={<FaMinus />}
                   onClick={() => handleRemoveCategory(index)}
-                  size="sm"
+                  size="md"
                 />
               </Stack>
             ))}
