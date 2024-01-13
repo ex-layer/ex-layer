@@ -1,5 +1,5 @@
 {
-  "name": "ex-layer",
+  "name": "ex-layer-demo",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,18 +9,34 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth0/nextjs-auth0": "^3.5.0",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@handsontable/react": "^14.0.0",
+    "ag-grid-community": "^31.0.1",
+    "ag-grid-react": "^31.0.1",
+    "apexcharts": "^3.45.1",
+    "chart.js": "^4.4.1",
+    "encoding": "^0.1.13",
     "framer-motion": "^10.16.16",
+    "handsontable": "^14.0.0",
     "next": "14.0.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-apexcharts": "^1.4.1",
+    "react-chartjs-2": "^5.2.0",
+    "react-data-grid": "^7.0.0-beta.41",
+    "react-datepicker": "^4.25.0",
+    "react-dom": "^18",
+    "react-icons": "^4.12.0",
+    "react-table": "^7.8.0"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
+    "@types/react-datepicker": "^4.19.4",
     "@types/react-dom": "^18",
+    "@types/react-table": "^7.7.18",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
