@@ -34,3 +34,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+build.sh
+push.sh
+
+bfg-1.14.0.jar
