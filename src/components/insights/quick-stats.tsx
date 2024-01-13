@@ -90,52 +90,52 @@ const DashboardStats = (props: DashboardStatsProps) => {
   const { totalRevenue, totalExpenses, profit } = calculateChange();
 
   return (
-    <Box
-    width={{ base: '100%', md: '48%' }}
-    p={4}
-    borderRadius="1xl"
-    boxShadow="md"
-    mb={{ base: '4', md: '0' }}
-    borderColor={outlineColor}
+<Box
+  width={{ base: '100%', md: '48%' }}
+  p={4}
+  borderRadius="1xl"
+  boxShadow="md"
+  mb={{ base: '4', md: '0' }}
+  borderColor={outlineColor}
+>
+  <ButtonGroup
+    mb={{ base: 4, md: 0 }}
+    isAttached
+    variant="outline"
+    colorScheme="teal"
+    flexDirection={{ base: 'row', md: 'row' }}
+    justifyContent="space-between"
+    flexWrap="wrap" // Added to allow wrapping on smaller screens
   >
-    <ButtonGroup
-      mb={{ base: 4, md: 0 }}
-      isAttached
-      variant="outline"
-      colorScheme="teal"
-      flexDirection={{ base: 'row', md: 'row' }}
-      justifyContent="space-between"
-      flexWrap="wrap" // Added to allow wrapping on smaller screens
+    <Button
+      onClick={() => setSelectedPeriod('All Time')}
+      flex={{ base: '1', md: 'auto' }} // Adjusted flex for better responsiveness
+      fontSize={{ base: 'xs', md: 'sm' }} // Adjusted font size for responsiveness
     >
-      <Button
-        onClick={() => setSelectedPeriod('All Time')}
-        flex={{ base: '1', md: 'auto' }} // Adjusted flex for better responsiveness
-        fontSize={{ base: 'sm', md: 'md' }} // Adjusted font size for responsiveness
-      >
-        All Time
-      </Button>
-      <Button
-        onClick={() => setSelectedPeriod('Last Month')}
-        flex={{ base: '1', md: 'auto' }}
-        fontSize={{ base: 'sm', md: 'md' }}
-      >
-        Last Month
-      </Button>
-      <Button
-        onClick={() => setSelectedPeriod('Last Week')}
-        flex={{ base: '1', md: 'auto' }}
-        fontSize={{ base: 'sm', md: 'md' }}
-      >
-        Last Week
-      </Button>
-      <Button
-        onClick={() => setSelectedPeriod('Today')}
-        flex={{ base: '1', md: 'auto' }}
-        fontSize={{ base: 'sm', md: 'md' }}
-      >
-        Today
-      </Button>
-    </ButtonGroup>
+      All Time
+    </Button>
+    <Button
+      onClick={() => setSelectedPeriod('Last Month')}
+      flex={{ base: '1', md: 'auto' }}
+      fontSize={{ base: 'xs', md: 'sm' }}
+    >
+      Last Month
+    </Button>
+    <Button
+      onClick={() => setSelectedPeriod('Last Week')}
+      flex={{ base: '1', md: 'auto' }}
+      fontSize={{ base: 'xs', md: 'sm' }}
+    >
+      Last Week
+    </Button>
+    <Button
+      onClick={() => setSelectedPeriod('Today')}
+      flex={{ base: '1', md: 'auto' }}
+      fontSize={{ base: 'xs', md: 'sm' }}
+    >
+      Today
+    </Button>
+  </ButtonGroup>
 
       <Stat mt={8}>
         <StatLabel fontSize="lg" fontWeight="bold" color={textColor}>

@@ -157,8 +157,8 @@ const Edit_Box: React.FC<EditBoxProps> = ({ transaction, revenueList, onSave , o
           <FormControl>
             <FormLabel>Amount</FormLabel>
             <InputGroup>
-              <InputLeftAddon  color={dollarSignColor} />
-              <FaDollarSign/>
+              <InputLeftAddon  color={dollarSignColor}><FaDollarSign/></InputLeftAddon>
+              
               <Input
                 type="number"
                 name="amount"
@@ -191,7 +191,7 @@ const Edit_Box: React.FC<EditBoxProps> = ({ transaction, revenueList, onSave , o
                   value={category.key}
                   onChange={(e) => handleCategoryChange(index, 'key', e.target.value)}
                   placeholder="Category"
-                  size="sm"
+                  size="md"
                 />
                 <Input
                   type="text"
@@ -199,13 +199,13 @@ const Edit_Box: React.FC<EditBoxProps> = ({ transaction, revenueList, onSave , o
                   value={category.value}
                   onChange={(e) => handleCategoryChange(index, 'value', e.target.value)}
                   placeholder="Value"
-                  size="sm"
+                  size="md"
                 />
                 <IconButton
                   aria-label={`Remove Category ${index}`}
                   icon={<FaMinus />}
                   onClick={() => handleRemoveCategory(index)}
-                  size="sm"
+                  size="md"
                 />
               </Stack>
             ))}
